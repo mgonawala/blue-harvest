@@ -68,12 +68,6 @@ public class AccountServiceImpl implements IAccountService {
   }
 
   @Override
-  public Account updateAccountOfCustomer(Account account, Long customerId, Long accountId) {
-
-    return null;
-  }
-
-  @Override
   public void deleteAccount(Long accountId, Long customerId) throws ResourceNotFoundException {
     Customer customer = customerExistValidation.apply(customerId);
     Account account = accountExistsValidator.apply(accountId);
@@ -88,5 +82,15 @@ public class AccountServiceImpl implements IAccountService {
   @Override
   public List<Account> findAllAccounts() {
     return accountRepository.findAll();
+  }
+
+  public IValidationStrategy<Account, Customer> getCreateAccountValidationStrategy() {
+    return createAccountValidationStrategy;
+  }
+
+  @Override
+  public void setCreateAccountValidationStrategy(
+      IValidationStrategy createAccountValidationStrategy) {
+    this.createAccountValidationStrategy = createAccountValidationStrategy;
   }
 }

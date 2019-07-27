@@ -74,4 +74,8 @@ public class TransactionServiceImpl implements ITransactionService {
     }
   }
 
+  public void setRevertTransactionValidation(
+      IValidationStrategy revertTransactionValidation) {
+    this.revertTransactionValidation = revertTransactionValidation;
+  }
 }
