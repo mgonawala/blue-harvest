@@ -9,7 +9,7 @@ public class EnoughAccountBalanceValidator implements DualValidator<Account, Tra
   @Override
   public boolean isValid(Account object, Transaction transaction) {
     if (transaction.getType().equals(TransactionType.CREDIT)) {
-      return object.getBalance() - transaction.getAmount() > 0;
+      return object.getBalance() - transaction.getAmount() >= 0;
     }
     return true;
   }

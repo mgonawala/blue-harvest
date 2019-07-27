@@ -35,6 +35,7 @@ public class TestUtil {
       customer.setEmail("abc");
       customer.setPhoneNumber("1234");
       customers.add(customer);
+      customer.setAccountList(new ArrayList<>());
     }
     return customers;
   }

@@ -14,8 +14,5 @@ public class NotEnoughBalanceException extends RuntimeException {
     super(message);
   }
 
-  public NotEnoughBalanceException(String message, Throwable cause) {
-    super(message, cause);
-  }
 
 }

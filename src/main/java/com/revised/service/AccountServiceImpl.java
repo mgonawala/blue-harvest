@@ -63,7 +63,7 @@ public class AccountServiceImpl implements IAccountService {
       }
       return account;
     } else {
-      throw new ResourceNotFoundException("Can not create account for customer:" + customerId);
+      throw new AccountAlreadyExistsException("Account already exists for customer:" + customerId);
     }
   }
 

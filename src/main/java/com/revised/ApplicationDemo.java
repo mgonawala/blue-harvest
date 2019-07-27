@@ -12,6 +12,7 @@ import com.revised.validation.AccountTypeNotExistsValidator;
 import com.revised.validation.DualValidator;
 import com.revised.validation.EnoughAccountBalanceValidator;
 import com.revised.validation.IValidator;
+import com.revised.validation.TransactionValidCondition;
 import com.revised.validation.strategy.CreateAccountValStrategy;
 import com.revised.validation.strategy.IValidationStrategy;
 import com.revised.validation.strategy.RevertTransactionValidationStrategy;
@@ -30,6 +31,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.convert.Jsr310Converters;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
@@ -64,6 +66,11 @@ public class ApplicationDemo extends SpringBootServletInitializer {
   }
 
   @Bean
+  public TransactionValidCondition transactionValidCondition() {
+    return new TransactionValidCondition();
+  }
+
+  @Bean
   public DualValidator accountTypeValid() {
     return new AccountTypeNotExistsValidator();
   }
@@ -86,6 +93,14 @@ public class ApplicationDemo extends SpringBootServletInitializer {
   }
 
   @Bean
+  @Qualifier("newTransaction")
+  public IValidationStrategy newTransaction() {
+    RevertTransactionValidationStrategy strategy = new RevertTransactionValidationStrategy();
+    strategy.addRule(transactionValidCondition());
+    return strategy;
+  }
+
+  @Bean
   @Qualifier("createAccount")
   public IValidationStrategy createAccountValidationStrategy() {
     CreateAccountValStrategy strategy = new CreateAccountValStrategy();
@@ -95,6 +110,7 @@ public class ApplicationDemo extends SpringBootServletInitializer {
   }
 
   @Bean
+  @Profile("dev")
   @ConditionalOnProperty(value = "customers.stub",
       havingValue = "true",
       matchIfMissing = false)

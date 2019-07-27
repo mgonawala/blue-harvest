@@ -180,7 +180,7 @@
 
   <properties>
     <checkstyle-maven-plugin.version>3.1.0</checkstyle-maven-plugin.version>
-    <jacoco.minimum.line.coverage>0.8</jacoco.minimum.line.coverage>
+    <jacoco.minimum.line.coverage>0.7</jacoco.minimum.line.coverage>
     <jacoco.version>0.8.4</jacoco.version>
     <java.version>1.8</java.version>
 

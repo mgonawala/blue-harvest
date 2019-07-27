@@ -132,6 +132,42 @@ public class TransactionServiceTest {
     Assert.assertEquals(account.getBalance(), result.getAccount().getBalance(), 0);
   }
 
+  @Test(expected = NotEnoughBalanceException.class)
+  public void testInvalidDebitTransaction() {
+
+    Customer customer = new Customer();
+    customer.setAccountList(new ArrayList<>());
+    customer.setId(1L);
+
+    Account account = new Account();
+    account.setId(1L);
+    account.setBalance(50d);
+    account.setType(AccountType.CREDIT);
+    account.setCustomer(customer);
+    Transaction transaction = new Transaction();
+    transaction.setAmount(100d);
+    transaction.setType(TransactionType.DEBIT);
+    transaction.setAccount(account);
+
+    Transaction newTransaction = new Transaction();
+    newTransaction.setAccount(account);
+
+    customer.getAccountList().add(account);
+    DebitOperation debitOperation = Mockito.mock(DebitOperation.class);
+
+    Mockito.when(accountExistsValidator.apply(1L)).thenReturn(account);
+    Mockito.when(
+        operationFactory.getOperation(
+            TransactionType.DEBIT, transactionRepository, accountRepository))
+        .thenReturn(debitOperation);
+
+    Mockito.when(debitOperation.apply(transaction, account)).thenReturn(newTransaction);
+
+    Transaction result = transactionService.commitTransaction(transaction, account.getId());
+
+    Assert.assertEquals(account.getBalance(), result.getAccount().getBalance(), 0);
+  }
+
   @Test
   public void testInitialCreditTransaction() {
 
@@ -165,9 +201,7 @@ public class TransactionServiceTest {
         .thenReturn(initialCreditOperation);
 
     Mockito.when(initialCreditOperation.apply(transaction, account)).thenReturn(newTransaction);
-
     Transaction result = transactionService.commitTransaction(transaction, account.getId());
-
     Assert.assertEquals(account.getBalance(), result.getAccount().getBalance(), 0);
   }
 

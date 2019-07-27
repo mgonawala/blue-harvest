@@ -38,6 +38,10 @@ public class TransactionServiceImpl implements ITransactionService {
   private IValidationStrategy revertTransactionValidation;
 
   @Autowired
+  @Qualifier("newTransaction")
+  private IValidationStrategy newTransactionStrategy;
+
+  @Autowired
   private OperationFactory operationFactory;
 
   @Override
@@ -49,9 +53,12 @@ public class TransactionServiceImpl implements ITransactionService {
   @Override
   public Transaction commitTransaction(Transaction transaction, Long accountId) {
     Account account = accountExistsValidator.apply(accountId);
+    if(newTransactionStrategy.isValid(account,transaction))
     return operationFactory.
         getOperation(transaction.getType(), transactionRepository, accountRepository)
         .apply(transaction, account);
+    else
+      throw new NotEnoughBalanceException("Account balance is not enough:");
   }
 
   @Override

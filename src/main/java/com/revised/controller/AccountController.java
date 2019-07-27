@@ -21,17 +21,39 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
+/**
+ *
+ * <p> Controller that performs operations on accounts.</p>
+ *
+ * <p> It provides simple CRUD operations on Account Resource.
+ * It is capable of producing result in JSON format.</p>
+ * @author <a href="mailto:mohini.gonawala90@gmail.com">Mohini Gonawala</a>
+ */
 @RestController
 @RequestMapping(value = "/api/v1", produces = {MediaType.APPLICATION_JSON_VALUE})
 @Api(value = "banking", description = "Operations pertaining to Accounts in Banking.")
 public class AccountController {
 
+  /** Dependencies **/
+
+  /** ModelMapped used to map DTO objects to Entity **/
   @Autowired
   private ModelMapper modelMapper;
 
+  /** Account service carrying business login **/
   @Autowired
   private IAccountService accountService;
 
+  /* ---------------- Public APIs -------------- */
+
+  /**
+   *
+   * Finds all the accounts of the given Customer.
+   *
+   * @param id Customer Id
+   * @return List of accounts of given customer
+   */
   @ApiOperation(value = "View all the Accounts of given customer.")
   @GetMapping("/customers/{id}/accounts")
   public ResponseEntity<List<Account>> getAllAccountsOfCustomer(@PathVariable @Min(1) Long id) {

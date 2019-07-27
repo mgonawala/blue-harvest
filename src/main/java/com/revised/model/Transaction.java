@@ -10,9 +10,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
+import org.springframework.data.annotation.CreatedDate;
 
 @Entity
-public class Transaction {
+public class Transaction extends DateAudit {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +21,7 @@ public class Transaction {
 
   private TransactionType type;
 
+  @CreatedDate
   private Instant transactionDate;
 
   @NotNull(message = "Please provide valid amount.")

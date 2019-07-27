@@ -1,5 +1,6 @@
 package com.revised.service;
 
+import com.revised.exception.AccountAlreadyExistsException;
 import com.revised.exception.ResourceNotFoundException;
 import com.revised.model.Account;
 import com.revised.model.Customer;
@@ -85,7 +86,7 @@ public class AccountServiceTest {
     Assert.assertEquals(account.getType(), result.getType());
   }
 
-  @Test(expected = ResourceNotFoundException.class)
+  @Test(expected = AccountAlreadyExistsException.class)
   public void exceptionWhenCreateAccount() {
 
     Customer customer = TestUtil.getCustomers(1).get(0);
