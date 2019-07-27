@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Transaction {
@@ -20,6 +22,8 @@ public class Transaction {
 
   private Instant transactionDate;
 
+  @NotNull(message = "Please provide valid amount.")
+  @DecimalMin("1.00")
   private double amount;
 
   private TxStatus status;

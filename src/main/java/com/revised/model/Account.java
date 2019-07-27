@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.DecimalMin;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -17,6 +18,7 @@ public class Account extends DateAudit {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @DecimalMin("0")
   private double balance;
 
   private AccountType type;
@@ -26,6 +28,8 @@ public class Account extends DateAudit {
   @JoinColumn(nullable = false, updatable = false)
   @OnDelete(action = OnDeleteAction.CASCADE)
   private Customer customer;
+
+  private String status;
 
   public Long getId() {
     return id;
@@ -57,5 +61,13 @@ public class Account extends DateAudit {
 
   public void setCustomer(Customer customer) {
     this.customer = customer;
+  }
+
+  public String getStatus() {
+    return status;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
   }
 }

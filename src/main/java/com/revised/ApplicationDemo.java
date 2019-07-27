@@ -6,11 +6,21 @@ import com.revised.model.Account;
 import com.revised.model.Customer;
 import com.revised.service.IAccountService;
 import com.revised.service.ICustomerService;
+import com.revised.validation.AccountActiveValidator;
+import com.revised.validation.AccountBalanceCondition;
+import com.revised.validation.AccountTypeNotExistsValidator;
+import com.revised.validation.DualValidator;
+import com.revised.validation.EnoughAccountBalanceValidator;
+import com.revised.validation.IValidator;
+import com.revised.validation.strategy.CreateAccountValStrategy;
+import com.revised.validation.strategy.IValidationStrategy;
+import com.revised.validation.strategy.RevertTransactionValidationStrategy;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.TimeZone;
 import javax.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -30,6 +40,9 @@ public class ApplicationDemo extends SpringBootServletInitializer {
   @Value("${spring.jackson.time-zone}")
   String timeZone;
 
+  @Value("${minimum.initial.credit}")
+  Long minimumBalance;
+
   public static void main(String[] args) {
     SpringApplication.run(ApplicationDemo.class, args);
   }
@@ -37,6 +50,43 @@ public class ApplicationDemo extends SpringBootServletInitializer {
   @PostConstruct
   void init() {
     TimeZone.setDefault(TimeZone.getTimeZone(timeZone));
+  }
+
+  @Bean
+  public IValidator activeAccount() {
+    return new AccountActiveValidator();
+  }
+
+  @Bean
+  public DualValidator enoughBalance() {
+    return new EnoughAccountBalanceValidator();
+  }
+
+  @Bean
+  public DualValidator accountTypeValid() {
+    return new AccountTypeNotExistsValidator();
+  }
+
+  @Bean
+  public DualValidator accountBalanceCondition() {
+    return new AccountBalanceCondition(minimumBalance);
+  }
+
+  @Bean
+  @Qualifier("revertTransaction")
+  public IValidationStrategy revertTransactionValidationStrategy() {
+    RevertTransactionValidationStrategy strategy = new RevertTransactionValidationStrategy();
+    strategy.addRule(enoughBalance());
+    return strategy;
+  }
+
+  @Bean
+  @Qualifier("createAccount")
+  public IValidationStrategy createAccountValidationStrategy() {
+    CreateAccountValStrategy strategy = new CreateAccountValStrategy();
+    strategy.addRule(accountTypeValid());
+    strategy.addRule(accountBalanceCondition());
+    return strategy;
   }
 
   @Bean

@@ -5,6 +5,8 @@ import com.revised.service.ITransactionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,23 +30,23 @@ public class TransactionController {
   @ApiOperation(value = "Operation to find all transaction of given account.")
   @GetMapping("/accounts/{id}/transactions")
   public ResponseEntity<List<Transaction>> getAllTransactionOfAccount(
-      @PathVariable("id") Long accountId) {
+      @PathVariable("id") @Min(1) Long accountId) {
     return new ResponseEntity<>(transactionService.getAllTransactionOfAccount(accountId),
         HttpStatus.OK);
   }
 
   @PostMapping("/accounts/{id}/transactions")
   @ApiOperation(value = "Allows to perform transaction on the given account.")
-  public ResponseEntity<Transaction> commitTransaction(@RequestBody Transaction transaction,
-      @PathVariable Long id) {
+  public ResponseEntity<Transaction> commitTransaction(@RequestBody @Valid Transaction transaction,
+      @PathVariable @Min(1) Long id) {
     return new ResponseEntity<>(transactionService.commitTransaction(transaction, id),
         HttpStatus.CREATED);
   }
 
   @PutMapping("/accounts/{id}/transactions/{tid}")
   @ApiOperation(value = "Allows to revert given transaction.")
-  public ResponseEntity<Transaction> revertTransaction(@PathVariable("tid") Long tid,
-      @PathVariable("id") Long id) {
+  public ResponseEntity<Transaction> revertTransaction(@PathVariable("tid") @Min(1) Long tid,
+      @PathVariable("id") @Min(1) Long id) {
     return new ResponseEntity<>(transactionService.revertTransaction(tid, id), HttpStatus.OK);
   }
 }
