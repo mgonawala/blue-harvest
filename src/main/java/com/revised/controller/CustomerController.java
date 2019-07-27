@@ -1,10 +1,13 @@
 package com.revised.controller;
 
+import com.revised.dto.CustomerDto;
 import com.revised.model.Customer;
 import com.revised.service.ICustomerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
+import javax.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,6 +27,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class CustomerController {
 
   @Autowired
+  private ModelMapper modelMapper;
+
+  @Autowired
   private ICustomerService customerService;
 
   @GetMapping
@@ -41,17 +47,19 @@ public class CustomerController {
 
   @PostMapping
   @ApiOperation(value = "Operation to create a new customer.")
-  public ResponseEntity<Customer> createNewCustomer(@RequestBody Customer customer) {
-    return new ResponseEntity<Customer>(customerService.createNewCustomer(customer),
+  public ResponseEntity<Customer> createNewCustomer(@RequestBody CustomerDto customer) {
+    return new ResponseEntity<Customer>(customerService.
+        createNewCustomer(modelMapper.map(customer, Customer.class)),
         HttpStatus.CREATED);
   }
 
   @PutMapping("/{id}")
   @ApiOperation(value = "Operation to update customer information.")
 
-  public ResponseEntity<Customer> updateCustomer(@RequestBody Customer customer,
+  public ResponseEntity<Customer> updateCustomer(@RequestBody @Valid CustomerDto customer,
       @PathVariable Long id) {
-    return new ResponseEntity<Customer>(customerService.updateCustomer(customer, id),
+    return new ResponseEntity<Customer>(customerService.updateCustomer(
+        modelMapper.map(customer, Customer.class), id),
         HttpStatus.OK);
   }
 

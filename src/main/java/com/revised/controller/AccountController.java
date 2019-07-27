@@ -1,5 +1,6 @@
 package com.revised.controller;
 
+import com.revised.dto.AccountDto;
 import com.revised.model.Account;
 import com.revised.service.IAccountService;
 import io.swagger.annotations.Api;
@@ -7,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,6 +27,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class AccountController {
 
   @Autowired
+  private ModelMapper modelMapper;
+
+  @Autowired
   private IAccountService accountService;
 
   @ApiOperation(value = "View all the Accounts of given customer.")
@@ -35,9 +40,10 @@ public class AccountController {
 
   @ApiOperation(value = "Create a new account for the given customer.")
   @PostMapping("/customers/{id}/accounts")
-  public ResponseEntity<Account> createNewAccount(@RequestBody @Valid Account account,
+  public ResponseEntity<Account> createNewAccount(@RequestBody @Valid AccountDto account,
       @PathVariable Long id) {
-    return new ResponseEntity<>(accountService.createNewAccount(account, id), HttpStatus.CREATED);
+    return new ResponseEntity<>(accountService.createNewAccount
+        (modelMapper.map(account, Account.class), id), HttpStatus.CREATED);
   }
 
   @ApiOperation(value = "View account details of given account id.")

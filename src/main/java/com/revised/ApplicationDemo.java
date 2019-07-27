@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.TimeZone;
 import javax.annotation.PostConstruct;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -72,6 +73,10 @@ public class ApplicationDemo extends SpringBootServletInitializer {
     return new AccountBalanceCondition(minimumBalance);
   }
 
+  @Bean
+  public ModelMapper modelMapper() {
+    return new ModelMapper();
+  }
   @Bean
   @Qualifier("revertTransaction")
   public IValidationStrategy revertTransactionValidationStrategy() {

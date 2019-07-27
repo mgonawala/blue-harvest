@@ -1,5 +1,6 @@
 package com.revised.controller;
 
+import com.revised.dto.TransactionDto;
 import com.revised.model.Transaction;
 import com.revised.service.ITransactionService;
 import io.swagger.annotations.Api;
@@ -7,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,6 +26,10 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(description = "Operations pertaining to Transaction in Banking.")
 public class TransactionController {
 
+
+  @Autowired
+  private ModelMapper modelMapper;
+
   @Autowired
   private ITransactionService transactionService;
 
@@ -37,9 +43,11 @@ public class TransactionController {
 
   @PostMapping("/accounts/{id}/transactions")
   @ApiOperation(value = "Allows to perform transaction on the given account.")
-  public ResponseEntity<Transaction> commitTransaction(@RequestBody @Valid Transaction transaction,
+  public ResponseEntity<Transaction> commitTransaction(
+      @RequestBody @Valid TransactionDto transaction,
       @PathVariable @Min(1) Long id) {
-    return new ResponseEntity<>(transactionService.commitTransaction(transaction, id),
+    return new ResponseEntity<>(transactionService.commitTransaction(
+        modelMapper.map(transaction, Transaction.class), id),
         HttpStatus.CREATED);
   }
 

@@ -159,6 +159,11 @@
       <version>2.6.1</version>
     </dependency>
 
+    <dependency>
+      <artifactId>modelmapper</artifactId>
+      <groupId>org.modelmapper</groupId>
+      <version>2.3.2</version>
+    </dependency>
 
   </dependencies>
   <description>Demo project for Spring Boot</description>
