@@ -21,6 +21,8 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.TimeZone;
 import javax.annotation.PostConstruct;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,6 +41,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories(value = {"com.revised.repository"})
 @SpringBootApplication
 public class ApplicationDemo extends SpringBootServletInitializer {
+
+  private static final Logger logger = LogManager.getLogger(ApplicationDemo.class);
 
   @Value("${spring.jackson.time-zone}")
   String timeZone;
@@ -84,6 +88,7 @@ public class ApplicationDemo extends SpringBootServletInitializer {
   public ModelMapper modelMapper() {
     return new ModelMapper();
   }
+
   @Bean
   @Qualifier("revertTransaction")
   public IValidationStrategy revertTransactionValidationStrategy() {
@@ -111,9 +116,7 @@ public class ApplicationDemo extends SpringBootServletInitializer {
 
   @Bean
   @Profile("dev")
-  @ConditionalOnProperty(value = "customers.stub",
-      havingValue = "true",
-      matchIfMissing = false)
+  @ConditionalOnProperty(value = "customers.stub", havingValue = "true", matchIfMissing = false)
   CommandLineRunner runner(ICustomerService customerService, IAccountService accountService) {
     return args -> {
       // read json and write to db

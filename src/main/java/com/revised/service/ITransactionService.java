@@ -13,5 +13,4 @@ public interface ITransactionService {
 
   Transaction revertTransaction(Long transactionId, Long accountId)
       throws ResourceNotFoundException;
-
 }

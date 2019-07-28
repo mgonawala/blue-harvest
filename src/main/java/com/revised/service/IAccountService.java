@@ -12,7 +12,6 @@ public interface IAccountService {
 
   Account createNewAccount(Account account, Long customerId) throws AccountAlreadyExistsException;
 
-
   void deleteAccount(Long accountId, Long customerId) throws ResourceNotFoundException;
 
   Account findAccountById(Long id) throws ResourceNotFoundException;
@@ -22,5 +21,4 @@ public interface IAccountService {
   IValidationStrategy getCreateAccountValidationStrategy();
 
   void setCreateAccountValidationStrategy(IValidationStrategy strategy);
-
 }

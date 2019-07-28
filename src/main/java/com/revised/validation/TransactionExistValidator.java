@@ -7,9 +7,18 @@ import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * Function to check if given Transaction is valid or not. It returns true if valid else throws
+ * ResourceNotFoundException..
+ *
+ * @author <a href="mailto:mohini.gonawala90@gmail.com">Mohini Gonawala</a>
+ */
 @Component
 public class TransactionExistValidator implements Function<Long, Transaction> {
 
+  /**
+   * Transaction repository for DAO Access *
+   */
   TransactionRepository transactionRepository;
 
   @Autowired
@@ -19,7 +28,8 @@ public class TransactionExistValidator implements Function<Long, Transaction> {
 
   @Override
   public Transaction apply(Long id) {
-    return transactionRepository.findById(id).orElseThrow(() ->
-        new ResourceNotFoundException("Transaction is not valid:" + id));
+    return transactionRepository
+        .findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Transaction is not valid:" + id));
   }
 }

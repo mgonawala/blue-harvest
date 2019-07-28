@@ -10,24 +10,18 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"email"}),
-    name = "customer")
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"email"}), name = "customer")
 public class Customer extends DateAudit {
-
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Id
-  private Long id;
-
-  private String firstName;
-
-  private String lastName;
-
-  private String phoneNumber;
-
-  private String email;
 
   @OneToMany(mappedBy = "customer")
   List<Account> accountList;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
+  private Long id;
+  private String firstName;
+  private String lastName;
+  private String phoneNumber;
+  private String email;
 
   public Long getId() {
     return id;
@@ -75,5 +69,23 @@ public class Customer extends DateAudit {
 
   public void setAccountList(List<Account> accountList) {
     this.accountList = accountList;
+  }
+
+  @Override
+  public String toString() {
+    return "Customer{"
+        + "id="
+        + id
+        + ", firstName='"
+        + firstName
+        + '\''
+        + ", lastName='"
+        + lastName
+        + '\''
+        + ", phoneNumber='"
+        + phoneNumber
+        + '\''
+        + ", email='"
+        + email;
   }
 }

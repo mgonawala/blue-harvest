@@ -1,6 +1,6 @@
 package com.revised.model;
 
 public enum AccountType {
-
-  CREDIT, SAVINGS
+  CREDIT,
+  SAVINGS
 }

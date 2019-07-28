@@ -8,13 +8,13 @@ import java.util.List;
 public interface ICustomerService {
 
   static Customer parseUpdateRequest(Customer response, Customer request) {
-    if (request.getFirstName() != null || !request.getFirstName().isEmpty()) {
+    if (request.getFirstName() != null && !request.getFirstName().isEmpty()) {
       response.setFirstName(request.getFirstName());
     }
-    if (request.getLastName() != null || !request.getLastName().isEmpty()) {
+    if (request.getLastName() != null && !request.getLastName().isEmpty()) {
       response.setLastName(request.getLastName());
     }
-    if (request.getPhoneNumber() != null || !request.getPhoneNumber().isEmpty()) {
+    if (request.getPhoneNumber() != null && !request.getPhoneNumber().isEmpty()) {
       response.setPhoneNumber(request.getPhoneNumber());
     }
     return response;
@@ -29,5 +29,4 @@ public interface ICustomerService {
   Customer updateCustomer(Customer customer, Long id) throws ResourceNotFoundException;
 
   void deleteCustomer(Long id) throws ResourceNotFoundException;
-
 }

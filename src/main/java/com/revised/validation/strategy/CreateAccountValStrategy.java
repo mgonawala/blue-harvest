@@ -8,7 +8,6 @@ import java.util.List;
 
 public class CreateAccountValStrategy implements IValidationStrategy<Account, Customer> {
 
-
   List<DualValidator> validatorList = new ArrayList<>();
 
   @Override

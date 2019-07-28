@@ -70,4 +70,9 @@ public class Account extends DateAudit {
   public void setStatus(String status) {
     this.status = status;
   }
+
+  @Override
+  public String toString() {
+    return "Account{" + "id=" + id + ", balance=" + balance + ", type=" + type;
+  }
 }

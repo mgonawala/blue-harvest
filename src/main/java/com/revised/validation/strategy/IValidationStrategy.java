@@ -7,5 +7,4 @@ public interface IValidationStrategy<T, V> {
   void addRule(DualValidator validator);
 
   boolean isValid(T t, V v);
-
 }

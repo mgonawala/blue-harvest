@@ -6,8 +6,8 @@ import com.revised.validation.DualValidator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RevertTransactionValidationStrategy implements
-    IValidationStrategy<Account, Transaction> {
+public class RevertTransactionValidationStrategy
+    implements IValidationStrategy<Account, Transaction> {
 
   List<DualValidator> validatorList = new ArrayList<>();
 
