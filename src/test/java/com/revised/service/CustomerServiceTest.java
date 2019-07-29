@@ -21,11 +21,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class CustomerServiceTest {
 
-  @Autowired
-  ICustomerService customerService;
+  @Autowired ICustomerService customerService;
   List<Customer> customerList = new ArrayList<>();
-  @MockBean
-  private CustomerRepository customerRepository;
+  @MockBean private CustomerRepository customerRepository;
 
   @Test
   public void testFindByCustomerId() {
@@ -87,6 +85,7 @@ public class CustomerServiceTest {
 
     Mockito.doNothing().when(customerRepository).delete(Mockito.any(Customer.class));
     customerService.deleteCustomer(1L);
+    Mockito.verify(customerRepository).delete(Mockito.any(Customer.class));
   }
 
   @Test(expected = ResourceNotFoundException.class)
@@ -133,5 +132,104 @@ public class CustomerServiceTest {
     Mockito.when(customerRepository.findAll()).thenReturn(customers);
     List<Customer> result = customerService.findAllCustomers();
     Assert.assertEquals(3, result.size());
+  }
+
+  @Test
+  public void parseUpdateWithNullFirstName() {
+    Customer request = TestUtil.getCustomers(1).get(0);
+    Customer response = TestUtil.getCustomers(1).get(0);
+
+    request.setFirstName(null);
+    response.setFirstName("Should Not Change");
+    Customer result = ICustomerService.parseUpdateRequest(response, request);
+    Assert.assertNotNull("Should Not Change", result.getFirstName());
+  }
+
+  @Test
+  public void parseUpdateWithEmptyFirstName() {
+    Customer request = TestUtil.getCustomers(1).get(0);
+    Customer response = TestUtil.getCustomers(1).get(0);
+
+    request.setFirstName("");
+    response.setFirstName("Should Not Change");
+    Customer result = ICustomerService.parseUpdateRequest(response, request);
+    Assert.assertNotNull("Should Not Change", result.getFirstName());
+  }
+
+  @Test
+  public void parseUpdateWithValidFirstName() {
+    Customer request = TestUtil.getCustomers(1).get(0);
+    Customer response = TestUtil.getCustomers(1).get(0);
+
+    request.setFirstName("This will be updated");
+    response.setFirstName("Should Not Change");
+    Customer result = ICustomerService.parseUpdateRequest(response, request);
+    Assert.assertNotNull("This will be updated", result.getFirstName());
+  }
+
+  @Test
+  public void parseUpdateWithNullLastName() {
+    Customer request = TestUtil.getCustomers(1).get(0);
+    Customer response = TestUtil.getCustomers(1).get(0);
+
+    request.setLastName(null);
+    response.setLastName("Should Not Change");
+    Customer result = ICustomerService.parseUpdateRequest(response, request);
+    Assert.assertNotNull("Should Not Change", result.getLastName());
+  }
+
+  @Test
+  public void parseUpdateWithEmptyLastName() {
+    Customer request = TestUtil.getCustomers(1).get(0);
+    Customer response = TestUtil.getCustomers(1).get(0);
+
+    request.setLastName("");
+    response.setLastName("Should Not Change");
+    Customer result = ICustomerService.parseUpdateRequest(response, request);
+    Assert.assertNotNull("Should Not Change", result.getLastName());
+  }
+
+  @Test
+  public void parseUpdateWithValidLastName() {
+    Customer request = TestUtil.getCustomers(1).get(0);
+    Customer response = TestUtil.getCustomers(1).get(0);
+
+    request.setLastName("This will be updated");
+    response.setLastName("Should Not Change");
+    Customer result = ICustomerService.parseUpdateRequest(response, request);
+    Assert.assertNotNull("This will be updated", result.getLastName());
+  }
+
+  @Test
+  public void parseUpdateWithNullPhoneNumber() {
+    Customer request = TestUtil.getCustomers(1).get(0);
+    Customer response = TestUtil.getCustomers(1).get(0);
+
+    request.setPhoneNumber(null);
+    response.setPhoneNumber("Should Not Change");
+    Customer result = ICustomerService.parseUpdateRequest(response, request);
+    Assert.assertNotNull("Should Not Change", result.getPhoneNumber());
+  }
+
+  @Test
+  public void parseUpdateWithEmptyPhoneNumber() {
+    Customer request = TestUtil.getCustomers(1).get(0);
+    Customer response = TestUtil.getCustomers(1).get(0);
+
+    request.setPhoneNumber("");
+    response.setPhoneNumber("Should Not Change");
+    Customer result = ICustomerService.parseUpdateRequest(response, request);
+    Assert.assertNotNull("Should Not Change", result.getPhoneNumber());
+  }
+
+  @Test
+  public void parseUpdateWithValidPhoneNumber() {
+    Customer request = TestUtil.getCustomers(1).get(0);
+    Customer response = TestUtil.getCustomers(1).get(0);
+
+    request.setPhoneNumber("This will be updated");
+    response.setPhoneNumber("Should Not Change");
+    Customer result = ICustomerService.parseUpdateRequest(response, request);
+    Assert.assertNotNull("This will be updated", result.getPhoneNumber());
   }
 }

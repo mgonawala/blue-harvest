@@ -22,16 +22,11 @@ public class CustomerServiceImpl implements ICustomerService {
 
   /** Dependencies * */
 
-  /**
-   * Logger *
-   */
+  /** Logger * */
   private static final Logger logger = LogManager.getLogger(CustomerServiceImpl.class);
 
-  /**
-   * Customer repository for DAO access *
-   */
-  @Autowired
-  private CustomerRepository customerRepository;
+  /** Customer repository for DAO access * */
+  @Autowired private CustomerRepository customerRepository;
 
   /**
    * Find all customers.
@@ -52,10 +47,11 @@ public class CustomerServiceImpl implements ICustomerService {
    */
   @Override
   public Customer findCustomerById(Long id) throws ResourceNotFoundException {
-    Customer result = customerRepository
-        .findById(id)
-        .map(customer -> customer)
-        .orElseThrow(() -> new ResourceNotFoundException("Customer Id is not found:" + id));
+    Customer result =
+        customerRepository
+            .findById(id)
+            .map(customer -> customer)
+            .orElseThrow(() -> new ResourceNotFoundException("Customer Id is not found:" + id));
     logger.debug("Customer result:{}", result);
     return result;
   }
@@ -89,13 +85,15 @@ public class CustomerServiceImpl implements ICustomerService {
    */
   @Override
   public Customer updateCustomer(Customer customer, Long id) throws ResourceNotFoundException {
-    Customer result = customerRepository
-        .findById(id)
-        .map(
-            cus -> {
-              return customerRepository.save(ICustomerService.parseUpdateRequest(cus, customer));
-            })
-        .orElseThrow(() -> new ResourceNotFoundException("Customer Id is not found:" + id));
+    Customer result =
+        customerRepository
+            .findById(id)
+            .map(
+                cus -> {
+                  return customerRepository.save(
+                      ICustomerService.parseUpdateRequest(cus, customer));
+                })
+            .orElseThrow(() -> new ResourceNotFoundException("Customer Id is not found:" + id));
     logger.debug("Customer Result:{}", result);
     logger.info("Customer created successfully:{}", result.getId());
     return result;
@@ -117,6 +115,6 @@ public class CustomerServiceImpl implements ICustomerService {
               return customer;
             })
         .orElseThrow(() -> new ResourceNotFoundException("Customer Id is not found:" + id));
-    logger.info("Customer deleyed successfully:{}",id);
+    logger.info("Customer deleyed successfully:{}", id);
   }
 }

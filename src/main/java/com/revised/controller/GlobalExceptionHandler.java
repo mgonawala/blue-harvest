@@ -6,6 +6,7 @@ import com.revised.exception.InvalidOperationException;
 import com.revised.exception.NotEnoughBalanceException;
 import com.revised.exception.ResourceNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -22,9 +23,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-/**
- * Global exception handler advice to catch all Application exceptions.
- */
+/** Global exception handler advice to catch all Application exceptions. */
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -70,7 +69,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     Map<String, Object> body = new LinkedHashMap<>();
     body.put("timestamp", new Date());
     body.put("status", HttpStatus.NOT_FOUND.value());
-    body.put("errors", ex.getMessage());
+    body.put("errors", Arrays.asList(ex.getMessage()));
     logger.info("Error in validation.");
     logger.debug("Validation errors:" + ex.getMessage());
     return new ResponseEntity(body, HttpStatus.BAD_REQUEST);
@@ -82,24 +81,23 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     Map<String, Object> body = new LinkedHashMap<>();
     body.put("timestamp", new Date());
     body.put("status", HttpStatus.NOT_FOUND.value());
-    body.put("errors", ex.getMessage());
+    body.put("errors", Arrays.asList(ex.getMessage()));
     logger.info("Error in validation.");
     logger.debug("Validation errors:" + ex.getMessage());
     return new ResponseEntity(body, HttpStatus.NOT_FOUND);
   }
 
   @ExceptionHandler({
-      CustomerExistsException.class,
-      AccountAlreadyExistsException.class,
-      NotEnoughBalanceException.class,
-      InvalidOperationException.class
+    CustomerExistsException.class,
+    AccountAlreadyExistsException.class,
+    NotEnoughBalanceException.class,
+    InvalidOperationException.class
   })
-  public final ResponseEntity<Object> customerNotFound(
-      CustomerExistsException ex, WebRequest request) {
+  public final ResponseEntity<Object> customerNotFound(Exception ex, WebRequest request) {
     Map<String, Object> body = new LinkedHashMap<>();
     body.put("timestamp", new Date());
     body.put("status", HttpStatus.BAD_REQUEST.value());
-    body.put("errors", ex.getMessage());
+    body.put("errors", Arrays.asList(ex.getMessage()));
     logger.info("Error in validation.");
     logger.debug("Validation errors:" + ex.getMessage());
     return new ResponseEntity(body, HttpStatus.NOT_FOUND);

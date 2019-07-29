@@ -16,19 +16,16 @@ public class EnoughAccountBalanceValidator implements DualValidator<Account, Tra
 
   /** Dependencies * */
 
-  /**
-   * Logger *
-   */
+  /** Logger * */
   private static final Logger logger = LogManager.getLogger(EnoughAccountBalanceValidator.class);
 
-  /**
-   * Account repository for DAO access *
-   */
+  /** Account repository for DAO access * */
   AccountRepository accountRepository;
 
   @Override
   public boolean isValid(Account object, Transaction transaction) {
-    if (transaction.getType().equals(TransactionType.CREDIT)) {
+    if (transaction.getType().equals(TransactionType.CREDIT)
+        || transaction.getType().equals(TransactionType.INITIAL)) {
       return object.getBalance() - transaction.getAmount() >= 0;
     }
     return true;

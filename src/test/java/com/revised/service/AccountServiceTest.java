@@ -15,6 +15,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,19 +26,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class AccountServiceTest {
 
-  @Autowired
-  IAccountService accountService;
+  @Autowired IAccountService accountService;
   List<Account> accountList = new ArrayList<>();
-  @MockBean
-  private AccountRepository accountRepository;
-  @MockBean
-  private CustomerExistValidation customerExistValidation;
-  @MockBean
-  private AccountExistsValidator accountExistsValidator;
-  @MockBean
-  private IValidationStrategy<Account, Customer> iValidationStrategy;
-  @MockBean
-  private ITransactionService transactionService;
+  @MockBean private AccountRepository accountRepository;
+  @MockBean private CustomerExistValidation customerExistValidation;
+  @MockBean private AccountExistsValidator accountExistsValidator;
+  @MockBean private IValidationStrategy<Account, Customer> iValidationStrategy;
+  @MockBean private ITransactionService transactionService;
 
   @Test
   public void findAllAccountOfCustomer() {
@@ -79,7 +74,7 @@ public class AccountServiceTest {
     accountService.setCreateAccountValidationStrategy(iValidationStrategy);
 
     Mockito.when(
-        transactionService.commitTransaction(Mockito.any(Transaction.class), Mockito.anyLong()))
+            transactionService.commitTransaction(Mockito.any(Transaction.class), Mockito.anyLong()))
         .thenReturn(Mockito.any());
     Account result = accountService.createNewAccount(account, 1L);
 
@@ -99,7 +94,7 @@ public class AccountServiceTest {
     accountService.setCreateAccountValidationStrategy(iValidationStrategy);
 
     Mockito.when(
-        transactionService.commitTransaction(Mockito.any(Transaction.class), Mockito.anyLong()))
+            transactionService.commitTransaction(Mockito.any(Transaction.class), Mockito.anyLong()))
         .thenReturn(Mockito.any());
     Account result = accountService.createNewAccount(account, 1L);
 
@@ -111,8 +106,37 @@ public class AccountServiceTest {
     Mockito.when(customerExistValidation.apply(1L)).thenReturn(new Customer());
 
     Mockito.when(accountExistsValidator.apply(1L)).thenReturn(new Account());
-
+    Mockito.doNothing().when(accountRepository).delete(Mockito.any(Account.class));
     accountService.deleteAccount(1L, 1L);
+    Mockito.verify(accountRepository).delete(Mockito.any(Account.class));
+  }
+
+  @Test
+  public void deleteAccountWithOnlyAccountId() {
+    Mockito.when(accountExistsValidator.apply(1L)).thenReturn(new Account());
+    Mockito.doNothing().when(accountRepository).deleteById(1L);
+    accountService.deleteAccount(1L);
+    Mockito.verify(accountRepository).deleteById(1L);
+  }
+
+  @Test
+  public void findByAccountId() {
+    Mockito.when(accountExistsValidator.apply(1L)).thenReturn(new Account());
+    Assert.assertNotNull(accountService.findAccountById(1L));
+  }
+
+  @Test(expected = ResourceNotFoundException.class)
+  public void findByAccountIdThrowsException() {
+    Mockito.when(accountExistsValidator.apply(1L))
+        .thenThrow(new ResourceNotFoundException("Account is not valid."));
+    Assert.assertNotNull(accountService.findAccountById(1L));
+  }
+
+  @Test
+  public void testFindAllAccounts() {
+    List<Account> accountList = TestUtil.getAccountList(5);
+    Mockito.when(accountRepository.findAll()).thenReturn(accountList);
+    Assert.assertEquals(5, accountList.size());
   }
 
   @Test(expected = ResourceNotFoundException.class)

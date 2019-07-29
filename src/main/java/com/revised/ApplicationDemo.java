@@ -6,12 +6,10 @@ import com.revised.model.Account;
 import com.revised.model.Customer;
 import com.revised.service.IAccountService;
 import com.revised.service.ICustomerService;
-import com.revised.validation.AccountActiveValidator;
 import com.revised.validation.AccountBalanceCondition;
 import com.revised.validation.AccountTypeNotExistsValidator;
 import com.revised.validation.DualValidator;
 import com.revised.validation.EnoughAccountBalanceValidator;
-import com.revised.validation.IValidator;
 import com.revised.validation.TransactionValidCondition;
 import com.revised.validation.strategy.CreateAccountValStrategy;
 import com.revised.validation.strategy.IValidationStrategy;
@@ -57,11 +55,6 @@ public class ApplicationDemo extends SpringBootServletInitializer {
   @PostConstruct
   void init() {
     TimeZone.setDefault(TimeZone.getTimeZone(timeZone));
-  }
-
-  @Bean
-  public IValidator activeAccount() {
-    return new AccountActiveValidator();
   }
 
   @Bean
@@ -121,8 +114,7 @@ public class ApplicationDemo extends SpringBootServletInitializer {
     return args -> {
       // read json and write to db
       ObjectMapper mapper = new ObjectMapper();
-      TypeReference<List<Customer>> typeReference = new TypeReference<List<Customer>>() {
-      };
+      TypeReference<List<Customer>> typeReference = new TypeReference<List<Customer>>() {};
       InputStream inputStream = TypeReference.class.getResourceAsStream("/json/customers.json");
       try {
         List<Customer> customer = mapper.readValue(inputStream, typeReference);
@@ -132,8 +124,7 @@ public class ApplicationDemo extends SpringBootServletInitializer {
         System.out.println("Unable to save customers: " + e.getMessage());
       }
 
-      TypeReference<List<Account>> accountTypeReferene = new TypeReference<List<Account>>() {
-      };
+      TypeReference<List<Account>> accountTypeReferene = new TypeReference<List<Account>>() {};
       inputStream = TypeReference.class.getResourceAsStream("/json/accounts.json");
       try {
         List<Account> accounts = mapper.readValue(inputStream, accountTypeReferene);

@@ -14,6 +14,8 @@ public interface IAccountService {
 
   void deleteAccount(Long accountId, Long customerId) throws ResourceNotFoundException;
 
+  void deleteAccount(Long accountId) throws ResourceNotFoundException;
+
   Account findAccountById(Long id) throws ResourceNotFoundException;
 
   List<Account> findAllAccounts();

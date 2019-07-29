@@ -30,40 +30,23 @@ public class AccountServiceImpl implements IAccountService {
 
   /** Dependencies * */
 
-  /**
-   * Logger *
-   */
+  /** Logger * */
   private static final Logger logger = LogManager.getLogger(AccountServiceImpl.class);
 
-  /**
-   * Account repository for Dao access *
-   */
-  @Autowired
-  private AccountRepository accountRepository;
+  /** Account repository for Dao access * */
+  @Autowired private AccountRepository accountRepository;
 
-  /**
-   * Customer repository for Dao access *
-   */
-  @Autowired
-  private CustomerRepository customerRepository;
+  /** Customer repository for Dao access * */
+  @Autowired private CustomerRepository customerRepository;
 
-  /**
-   * Transaction service *
-   */
-  @Autowired
-  private ITransactionService transactionService;
+  /** Transaction service * */
+  @Autowired private ITransactionService transactionService;
 
-  /**
-   * Validation checking Existing Customer *
-   */
-  @Autowired
-  private CustomerExistValidation customerExistValidation;
+  /** Validation checking Existing Customer * */
+  @Autowired private CustomerExistValidation customerExistValidation;
 
-  /**
-   * Validation checking Existing Account *
-   */
-  @Autowired
-  private AccountExistsValidator accountExistsValidator;
+  /** Validation checking Existing Account * */
+  @Autowired private AccountExistsValidator accountExistsValidator;
 
   /**
    * Validation Strategy to execute before creation of new account. It's Strategy is built in spring
@@ -142,6 +125,14 @@ public class AccountServiceImpl implements IAccountService {
     Account account = accountExistsValidator.apply(accountId);
     logger.info("Account validation: true");
     accountRepository.delete(account);
+    logger.info("Account deleted:true");
+  }
+
+  @Override
+  public void deleteAccount(Long accountId) throws ResourceNotFoundException {
+    Account account = accountExistsValidator.apply(accountId);
+    logger.info("Account validation: true");
+    accountRepository.deleteById(accountId);
     logger.info("Account deleted:true");
   }
 

@@ -10,7 +10,6 @@
         <artifactId>spring-boot-maven-plugin</artifactId>
         <groupId>org.springframework.boot</groupId>
       </plugin>
-
       <plugin>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <configuration>
@@ -38,6 +37,11 @@
         <configuration>
           <dataFile>${basedir}/target/coverage-reports/jacoco-unit.exec</dataFile>
           <destFile>${basedir}/target/coverage-reports/jacoco-unit.exec</destFile>
+          <excludes>
+
+            <exclude>com/revised/exception/*</exclude>
+            <exclude>com/revised/ApplicationDemo*</exclude>
+          </excludes>
         </configuration>
         <executions>
           <execution>
@@ -66,6 +70,7 @@
                     </limit>
                   </limits>
                 </rule>
+
               </rules>
             </configuration>
             <goals>
@@ -78,13 +83,13 @@
         <version>${jacoco.version}</version>
       </plugin>
 
-      <plugin>
+     <!-- <plugin>
         <artifactId>docker-maven-plugin</artifactId>
         <configuration>
           <baseImage>java:8</baseImage>
           <entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>
           <imageName>example/blue-harvest</imageName>
-          <!-- copy the service's jar file from target into the root directory of the image -->
+          &lt;!&ndash; copy the service's jar file from target into the root directory of the image &ndash;&gt;
           <resources>
             <resource>
               <directory>${project.build.directory}</directory>
@@ -94,7 +99,7 @@
           </resources>
         </configuration>
         <groupId>com.spotify</groupId>
-      </plugin>
+      </plugin>-->
     </plugins>
 
   </build>

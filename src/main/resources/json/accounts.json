@@ -1,27 +1,27 @@
 [
   {
     "id": 6,
-    "type": "CREDIT",
+    "type": "CURRENT",
     "balance": 159
   },
   {
     "id": 7,
-    "type": "CREDIT",
+    "type": "CURRENT",
     "balance": 288
   },
   {
     "id": 8,
-    "type": "CREDIT",
+    "type": "CURRENT",
     "balance": 209
   },
   {
     "id": 9,
-    "type": "CREDIT",
+    "type": "CURRENT",
     "balance": 108
   },
   {
     "id": 10,
-    "type": "CREDIT",
+    "type": "CURRENT",
     "balance": 246
   }
 ]

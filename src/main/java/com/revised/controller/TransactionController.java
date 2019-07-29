@@ -40,22 +40,14 @@ public class TransactionController {
 
   /** Dependencies * */
 
-  /**
-   * Logger *
-   */
+  /** Logger * */
   private static final Logger logger = LogManager.getLogger(TransactionController.class);
 
-  /**
-   * ModelMapper used to map DTO objects to Entity *
-   */
-  @Autowired
-  private ModelMapper modelMapper;
+  /** ModelMapper used to map DTO objects to Entity * */
+  @Autowired private ModelMapper modelMapper;
 
-  /**
-   * Transaction service carrying business logic *
-   */
-  @Autowired
-  private ITransactionService transactionService;
+  /** Transaction service carrying business logic * */
+  @Autowired private ITransactionService transactionService;
 
   /**
    * Finds all transactions of given account.

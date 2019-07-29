@@ -21,14 +21,10 @@ public class AccountExistsValidator implements Function<Long, Account> {
 
   /** Dependencies * */
 
-  /**
-   * Logger *
-   */
+  /** Logger * */
   private static final Logger logger = LogManager.getLogger(AccountExistsValidator.class);
 
-  /**
-   * Account repository for DAO access *
-   */
+  /** Account repository for DAO access * */
   AccountRepository accountRepository;
 
   @Autowired
@@ -50,7 +46,7 @@ public class AccountExistsValidator implements Function<Long, Account> {
       logger.debug("AccountExistsValidator:true");
       return byId.get();
     } else {
-      logger.error("Account id is not valid:{}",id);
+      logger.error("Account id is not valid:{}", id);
       throw new ResourceNotFoundException("Account Number is not Valid:" + id);
     }
   }

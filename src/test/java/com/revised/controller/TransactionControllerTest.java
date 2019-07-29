@@ -31,14 +31,10 @@ import org.springframework.test.web.servlet.MockMvc;
 public class TransactionControllerTest {
 
   List<Transaction> transactionList = new ArrayList<>();
-  @Autowired
-  private TransactionController transactionController;
-  @Autowired
-  private MockMvc mockMvc;
-  @Autowired
-  private ObjectMapper objectMapper;
-  @MockBean
-  private ITransactionService transactionService;
+  @Autowired private TransactionController transactionController;
+  @Autowired private MockMvc mockMvc;
+  @Autowired private ObjectMapper objectMapper;
+  @MockBean private ITransactionService transactionService;
   private String revertTransaction = "/api/v1/accounts/1/transactions/1";
   private String newTransaction = "/api/v1/accounts/1/transactions";
   private String getAllTransactionOfAccount = "/api/v1/accounts/1/transactions";

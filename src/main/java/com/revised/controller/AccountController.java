@@ -40,22 +40,14 @@ public class AccountController {
 
   /** Dependencies * */
 
-  /**
-   * Logger *
-   */
+  /** Logger * */
   private static final Logger logger = LogManager.getLogger(AccountController.class);
 
-  /**
-   * ModelMapper used to map DTO objects to Entity *
-   */
-  @Autowired
-  private ModelMapper modelMapper;
+  /** ModelMapper used to map DTO objects to Entity * */
+  @Autowired private ModelMapper modelMapper;
 
-  /**
-   * Account service carrying business logic *
-   */
-  @Autowired
-  private IAccountService accountService;
+  /** Account service carrying business logic * */
+  @Autowired private IAccountService accountService;
 
   /* ---------------- Public APIs -------------- */
 

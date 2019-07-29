@@ -30,14 +30,10 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 public class AccountControllerTest {
 
-  @MockBean
-  IAccountService accountService;
-  @Autowired
-  private AccountController accountController;
-  @Autowired
-  private MockMvc mockMvc;
-  @Autowired
-  private ObjectMapper objectMapper;
+  @MockBean IAccountService accountService;
+  @Autowired private AccountController accountController;
+  @Autowired private MockMvc mockMvc;
+  @Autowired private ObjectMapper objectMapper;
   private String apiGetAllAccount = "/api/v1/accounts";
   private String apiGetAccountById = "/api/v1/accounts/1";
   private String apiGetAllAccountCustomer = "/api/v1/customers/1/accounts";

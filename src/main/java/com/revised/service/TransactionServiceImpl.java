@@ -30,34 +30,20 @@ public class TransactionServiceImpl implements ITransactionService {
 
   /** Dependencies * */
 
-  /**
-   * Logger *
-   */
+  /** Logger * */
   private static final Logger logger = LogManager.getLogger(TransactionServiceImpl.class);
 
-  /**
-   * TransactionRepository for DAO access*
-   */
-  @Autowired
-  private TransactionRepository transactionRepository;
+  /** TransactionRepository for DAO access* */
+  @Autowired private TransactionRepository transactionRepository;
 
-  /**
-   * Account Repository for DAO access*
-   */
-  @Autowired
-  private AccountRepository accountRepository;
+  /** Account Repository for DAO access* */
+  @Autowired private AccountRepository accountRepository;
 
-  /**
-   * Validator to check valid account *
-   */
-  @Autowired
-  private AccountExistsValidator accountExistsValidator;
+  /** Validator to check valid account * */
+  @Autowired private AccountExistsValidator accountExistsValidator;
 
-  /**
-   * validator to check valid transaction *
-   */
-  @Autowired
-  private TransactionExistValidator transactionExistValidator;
+  /** validator to check valid transaction * */
+  @Autowired private TransactionExistValidator transactionExistValidator;
 
   /**
    * Validation Strategy to execute before reverting transaction. It's Strategy is built in spring
@@ -81,11 +67,8 @@ public class TransactionServiceImpl implements ITransactionService {
   @Qualifier("newTransaction")
   private IValidationStrategy newTransactionStrategy;
 
-  /**
-   * OperationFactory to return specific Operation object.
-   */
-  @Autowired
-  private OperationFactory operationFactory;
+  /** OperationFactory to return specific Operation object. */
+  @Autowired private OperationFactory operationFactory;
 
   /**
    * Method to find all transaction of given account.
@@ -111,9 +94,10 @@ public class TransactionServiceImpl implements ITransactionService {
     Account account = accountExistsValidator.apply(accountId);
     logger.info("Account validation:true");
     if (newTransactionStrategy.isValid(account, transaction)) {
-      Transaction result = operationFactory
-          .getOperation(transaction.getType(), transactionRepository, accountRepository)
-          .apply(transaction, account);
+      Transaction result =
+          operationFactory
+              .getOperation(transaction.getType(), transactionRepository, accountRepository)
+              .apply(transaction, account);
       logger.info("Transaction commited:{}", result.getId());
       logger.debug("Transaction result:{}", result);
       return result;
@@ -139,7 +123,8 @@ public class TransactionServiceImpl implements ITransactionService {
     logger.info("Transaction valid:true");
     if (revertTransactionValidation.isValid(account, transaction)) {
       logger.info("All conditions to carry revert transaction are met.");
-      if (transaction.getType().equals(TransactionType.CREDIT)) {
+      if (transaction.getType().equals(TransactionType.CREDIT)
+          || transaction.getType().equals(TransactionType.INITIAL)) {
         account.setBalance(account.getBalance() - transaction.getAmount());
       } else {
         account.setBalance(account.getBalance() + transaction.getAmount());
@@ -151,7 +136,7 @@ public class TransactionServiceImpl implements ITransactionService {
       logger.debug("Transaction result:{}", result);
       return result;
     } else {
-      logger.error("Can not revert transaction:{}",transactionId);
+      logger.error("Can not revert transaction:{}", transactionId);
       throw new NotEnoughBalanceException("Can not revert transaction:");
     }
   }

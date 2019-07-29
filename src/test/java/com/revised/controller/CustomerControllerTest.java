@@ -33,14 +33,10 @@ import org.springframework.test.web.servlet.MockMvc;
 public class CustomerControllerTest {
 
   List<Customer> customerList = new ArrayList<>();
-  @Autowired
-  private CustomerController customerController;
-  @Autowired
-  private MockMvc mockMvc;
-  @Autowired
-  private ObjectMapper objectMapper;
-  @MockBean
-  private ICustomerService customerService;
+  @Autowired private CustomerController customerController;
+  @Autowired private MockMvc mockMvc;
+  @Autowired private ObjectMapper objectMapper;
+  @MockBean private ICustomerService customerService;
   private String deleteCustomer = "/api/v1/customers/1";
   private String updateCustomer = "/api/v1/customers/1";
   private String getCustomer = "/api/v1/customers/1";

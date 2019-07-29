@@ -9,9 +9,7 @@ import javax.validation.constraints.NotEmpty;
  */
 public class CustomerDto {
 
-  /**
-   * Firstname of customer *
-   */
+  /** Firstname of customer * */
   @NotEmpty(message = "First name can't be empty.")
   private String firstName;
 
@@ -22,11 +20,8 @@ public class CustomerDto {
   /** Phone number of customer * */
   private int phoneNumber;
 
-  /**
-   * Email of customer *
-   */
-  @NotEmpty
-  private String email;
+  /** Email of customer * */
+  @NotEmpty private String email;
 
   public String getFirstName() {
     return firstName;

@@ -15,9 +15,11 @@ public class Customer extends DateAudit {
 
   @OneToMany(mappedBy = "customer")
   List<Account> accountList;
+
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Id
   private Long id;
+
   private String firstName;
   private String lastName;
   private String phoneNumber;

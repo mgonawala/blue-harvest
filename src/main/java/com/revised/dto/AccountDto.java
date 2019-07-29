@@ -13,17 +13,12 @@ public class AccountDto {
 
   /** DTO Fields * */
 
-  /**
-   * Balance needs to be greater than or equal to0 *
-   */
+  /** Balance needs to be greater than or equal to0 * */
   @DecimalMin("0")
   private double balance;
 
-  /**
-   * Represent account type CREDIT/SAVINGS *
-   */
-  @NotNull
-  private AccountType type;
+  /** Represent account type CURRENT/SAVINGS * */
+  @NotNull private AccountType type;
 
   /** Getter method for account balance * */
   public double getBalance() {

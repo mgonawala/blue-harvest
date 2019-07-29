@@ -9,7 +9,7 @@ import org.junit.Test;
 public class EnoughAccountBalanceValidatorTest {
 
   @Test
-  public void test(){
+  public void test() {
     Account account = new Account();
     account.setBalance(101d);
     Transaction transaction = new Transaction();
@@ -17,11 +17,23 @@ public class EnoughAccountBalanceValidatorTest {
     transaction.setAmount(100d);
 
     EnoughAccountBalanceValidator validator = new EnoughAccountBalanceValidator();
-    Assert.assertTrue(validator.isValid(account,transaction));
+    Assert.assertTrue(validator.isValid(account, transaction));
   }
 
   @Test
-  public void zeroBalance(){
+  public void testInitialValid() {
+    Account account = new Account();
+    account.setBalance(101d);
+    Transaction transaction = new Transaction();
+    transaction.setType(TransactionType.INITIAL);
+    transaction.setAmount(100d);
+
+    EnoughAccountBalanceValidator validator = new EnoughAccountBalanceValidator();
+    Assert.assertTrue(validator.isValid(account, transaction));
+  }
+
+  @Test
+  public void zeroBalance() {
     Account account = new Account();
     account.setBalance(100d);
     Transaction transaction = new Transaction();
@@ -29,10 +41,23 @@ public class EnoughAccountBalanceValidatorTest {
     transaction.setAmount(100d);
 
     EnoughAccountBalanceValidator validator = new EnoughAccountBalanceValidator();
-    Assert.assertTrue(validator.isValid(account,transaction));
+    Assert.assertTrue(validator.isValid(account, transaction));
   }
+
   @Test
-  public void invalid(){
+  public void InitialCreditZeroBalance() {
+    Account account = new Account();
+    account.setBalance(100d);
+    Transaction transaction = new Transaction();
+    transaction.setType(TransactionType.INITIAL);
+    transaction.setAmount(100d);
+
+    EnoughAccountBalanceValidator validator = new EnoughAccountBalanceValidator();
+    Assert.assertTrue(validator.isValid(account, transaction));
+  }
+
+  @Test
+  public void invalid() {
     Account account = new Account();
     account.setBalance(99d);
     Transaction transaction = new Transaction();
@@ -40,7 +65,30 @@ public class EnoughAccountBalanceValidatorTest {
     transaction.setAmount(100d);
 
     EnoughAccountBalanceValidator validator = new EnoughAccountBalanceValidator();
-    Assert.assertFalse(validator.isValid(account,transaction));
+    Assert.assertFalse(validator.isValid(account, transaction));
   }
 
+  @Test
+  public void invalidRevertWhenInitialType() {
+    Account account = new Account();
+    account.setBalance(99d);
+    Transaction transaction = new Transaction();
+    transaction.setType(TransactionType.INITIAL);
+    transaction.setAmount(100d);
+
+    EnoughAccountBalanceValidator validator = new EnoughAccountBalanceValidator();
+    Assert.assertFalse(validator.isValid(account, transaction));
+  }
+
+  @Test
+  public void testRevertOperationWithDebitTypeTransaction() {
+    Account account = new Account();
+    account.setBalance(99d);
+    Transaction transaction = new Transaction();
+    transaction.setType(TransactionType.DEBIT);
+    transaction.setAmount(100d);
+
+    EnoughAccountBalanceValidator validator = new EnoughAccountBalanceValidator();
+    Assert.assertTrue(validator.isValid(account, transaction));
+  }
 }

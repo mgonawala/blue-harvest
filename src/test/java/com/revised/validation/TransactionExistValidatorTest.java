@@ -1,6 +1,5 @@
 package com.revised.validation;
 
-
 import com.revised.exception.ResourceNotFoundException;
 import com.revised.model.Transaction;
 import com.revised.repository.TransactionRepository;
@@ -18,24 +17,19 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class TransactionExistValidatorTest {
 
-  @Autowired
-  TransactionExistValidator transactionExistValidator;
+  @Autowired TransactionExistValidator transactionExistValidator;
 
-  @MockBean
-  private TransactionRepository transactionRepository;
+  @MockBean private TransactionRepository transactionRepository;
 
   @Test
-  public void testValidId(){
-    Mockito.when(transactionRepository.findById(1L))
-        .thenReturn(Optional.of(new Transaction()));
+  public void testValidId() {
+    Mockito.when(transactionRepository.findById(1L)).thenReturn(Optional.of(new Transaction()));
     Assert.assertNotNull(transactionExistValidator.apply(1L));
   }
 
   @Test(expected = ResourceNotFoundException.class)
-  public void testInvalidId(){
-    Mockito.when(transactionRepository.findById(1L))
-        .thenReturn(Optional.empty());
+  public void testInvalidId() {
+    Mockito.when(transactionRepository.findById(1L)).thenReturn(Optional.empty());
     Assert.assertNotNull(transactionExistValidator.apply(1L));
   }
-
 }

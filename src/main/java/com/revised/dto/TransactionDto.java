@@ -11,9 +11,7 @@ import javax.validation.constraints.NotNull;
  */
 public class TransactionDto {
 
-  /**
-   * Transaction type CREDIT/DEBIT/INITIAL *
-   */
+  /** Transaction type CURRENT/DEBIT/INITIAL * */
   private TransactionType type;
 
   /** Transaction amount * */

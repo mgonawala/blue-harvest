@@ -17,9 +17,7 @@ public class AccountBalanceCondition implements DualValidator<Account, Customer>
     this.minimumInitialCredit = balance;
   }
 
-  /**
-   * Returns true if account balane is greter than or equals to minimum valid credit.
-   */
+  /** Returns true if account balane is greter than or equals to minimum valid credit. */
   @Override
   public boolean isValid(Account balance, Customer other) {
     return balance.getBalance() >= minimumInitialCredit;

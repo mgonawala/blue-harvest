@@ -10,20 +10,20 @@ import org.junit.Test;
 public class AccountTypeNotExistsValidatorTest {
 
   @Test
-  public void valid(){
+  public void valid() {
     Account account = TestUtil.getAccountList(1).get(0);
     Customer customer = TestUtil.getCustomers(1).get(0);
 
     customer.getAccountList().add(account);
-    customer.getAccountList().get(0).setType(AccountType.CREDIT);
+    customer.getAccountList().get(0).setType(AccountType.CURRENT);
 
     AccountTypeNotExistsValidator validator = new AccountTypeNotExistsValidator();
 
-    Assert.assertFalse(validator.isValid(account,customer));
+    Assert.assertFalse(validator.isValid(account, customer));
   }
 
   @Test
-  public void invalid(){
+  public void invalid() {
     Account account = TestUtil.getAccountList(1).get(0);
     Account other = TestUtil.getAccountList(1).get(0);
     other.setType(AccountType.SAVINGS);
@@ -31,11 +31,10 @@ public class AccountTypeNotExistsValidatorTest {
     Customer customer = TestUtil.getCustomers(1).get(0);
 
     customer.getAccountList().add(account);
-    customer.getAccountList().get(0).setType(AccountType.CREDIT);
+    customer.getAccountList().get(0).setType(AccountType.CURRENT);
 
     AccountTypeNotExistsValidator validator = new AccountTypeNotExistsValidator();
 
-    Assert.assertTrue(validator.isValid(other,customer));
+    Assert.assertTrue(validator.isValid(other, customer));
   }
-
 }

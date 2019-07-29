@@ -21,8 +21,7 @@ public class Transaction extends DateAudit {
 
   private TransactionType type;
 
-  @CreatedDate
-  private Instant transactionDate;
+  @CreatedDate private Instant transactionDate;
 
   @NotNull(message = "Please provide valid amount.")
   @DecimalMin("1.00")

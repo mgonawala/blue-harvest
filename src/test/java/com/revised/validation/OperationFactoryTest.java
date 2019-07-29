@@ -18,36 +18,33 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class OperationFactoryTest {
 
-  @Autowired
-  private OperationFactory operationFactory;
+  @Autowired private OperationFactory operationFactory;
 
-  @MockBean
-  private TransactionRepository transactionRepository;
+  @MockBean private TransactionRepository transactionRepository;
 
-  @MockBean
-  private AccountRepository accountRepository;
+  @MockBean private AccountRepository accountRepository;
 
   @Test
-  public void getCreditOperation(){
-    BiFunction<Transaction, Account, Transaction> operation = operationFactory
-        .getOperation(TransactionType.CREDIT, transactionRepository, accountRepository);
+  public void getCreditOperation() {
+    BiFunction<Transaction, Account, Transaction> operation =
+        operationFactory.getOperation(
+            TransactionType.CREDIT, transactionRepository, accountRepository);
     Assert.assertEquals(CreditOperation.class, operation.getClass());
   }
 
-
   @Test
-  public void getDebitOperation(){
-    BiFunction<Transaction, Account, Transaction> operation = operationFactory
-        .getOperation(TransactionType.DEBIT, transactionRepository, accountRepository);
+  public void getDebitOperation() {
+    BiFunction<Transaction, Account, Transaction> operation =
+        operationFactory.getOperation(
+            TransactionType.DEBIT, transactionRepository, accountRepository);
     Assert.assertEquals(DebitOperation.class, operation.getClass());
   }
 
   @Test
-  public void getInitialOperation(){
-    BiFunction<Transaction, Account, Transaction> operation = operationFactory
-        .getOperation(TransactionType.INITIAL, transactionRepository, accountRepository);
+  public void getInitialOperation() {
+    BiFunction<Transaction, Account, Transaction> operation =
+        operationFactory.getOperation(
+            TransactionType.INITIAL, transactionRepository, accountRepository);
     Assert.assertEquals(InitialCreditOperation.class, operation.getClass());
   }
-
-
 }

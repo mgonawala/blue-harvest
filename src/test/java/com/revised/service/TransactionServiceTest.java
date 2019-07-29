@@ -33,26 +33,19 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class TransactionServiceTest {
 
-  @Autowired
-  TransactionServiceImpl transactionService;
+  @Autowired TransactionServiceImpl transactionService;
 
-  @MockBean
-  private TransactionRepository transactionRepository;
+  @MockBean private TransactionRepository transactionRepository;
 
-  @MockBean
-  private AccountRepository accountRepository;
+  @MockBean private AccountRepository accountRepository;
 
-  @MockBean
-  private AccountExistsValidator accountExistsValidator;
+  @MockBean private AccountExistsValidator accountExistsValidator;
 
-  @MockBean
-  private TransactionExistValidator transactionExistValidator;
+  @MockBean private TransactionExistValidator transactionExistValidator;
 
-  @Mock
-  private IValidationStrategy<Account, Transaction> revertTransactionValidation;
+  @Mock private IValidationStrategy<Account, Transaction> revertTransactionValidation;
 
-  @MockBean
-  private OperationFactory operationFactory;
+  @MockBean private OperationFactory operationFactory;
 
   @Test
   public void testCreditTransaction() {
@@ -64,7 +57,7 @@ public class TransactionServiceTest {
     Account account = new Account();
     account.setId(1L);
     account.setBalance(100d);
-    account.setType(AccountType.CREDIT);
+    account.setType(AccountType.CURRENT);
     account.setCustomer(customer);
 
     Transaction transaction = new Transaction();
@@ -82,8 +75,8 @@ public class TransactionServiceTest {
 
     Mockito.when(accountExistsValidator.apply(1L)).thenReturn(account);
     Mockito.when(
-        operationFactory.getOperation(
-            TransactionType.CREDIT, transactionRepository, accountRepository))
+            operationFactory.getOperation(
+                TransactionType.CREDIT, transactionRepository, accountRepository))
         .thenReturn(creditOperation);
 
     Mockito.when(creditOperation.apply(transaction, account)).thenReturn(newTransaction);
@@ -103,7 +96,7 @@ public class TransactionServiceTest {
     Account account = new Account();
     account.setId(1L);
     account.setBalance(200d);
-    account.setType(AccountType.CREDIT);
+    account.setType(AccountType.CURRENT);
     account.setCustomer(customer);
 
     Transaction transaction = new Transaction();
@@ -121,8 +114,8 @@ public class TransactionServiceTest {
 
     Mockito.when(accountExistsValidator.apply(1L)).thenReturn(account);
     Mockito.when(
-        operationFactory.getOperation(
-            TransactionType.DEBIT, transactionRepository, accountRepository))
+            operationFactory.getOperation(
+                TransactionType.DEBIT, transactionRepository, accountRepository))
         .thenReturn(debitOperation);
 
     Mockito.when(debitOperation.apply(transaction, account)).thenReturn(newTransaction);
@@ -142,7 +135,7 @@ public class TransactionServiceTest {
     Account account = new Account();
     account.setId(1L);
     account.setBalance(50d);
-    account.setType(AccountType.CREDIT);
+    account.setType(AccountType.CURRENT);
     account.setCustomer(customer);
     Transaction transaction = new Transaction();
     transaction.setAmount(100d);
@@ -157,8 +150,8 @@ public class TransactionServiceTest {
 
     Mockito.when(accountExistsValidator.apply(1L)).thenReturn(account);
     Mockito.when(
-        operationFactory.getOperation(
-            TransactionType.DEBIT, transactionRepository, accountRepository))
+            operationFactory.getOperation(
+                TransactionType.DEBIT, transactionRepository, accountRepository))
         .thenReturn(debitOperation);
 
     Mockito.when(debitOperation.apply(transaction, account)).thenReturn(newTransaction);
@@ -178,7 +171,7 @@ public class TransactionServiceTest {
     Account account = new Account();
     account.setId(1L);
     account.setBalance(0d);
-    account.setType(AccountType.CREDIT);
+    account.setType(AccountType.CURRENT);
     account.setCustomer(customer);
 
     Transaction transaction = new Transaction();
@@ -196,8 +189,8 @@ public class TransactionServiceTest {
 
     Mockito.when(accountExistsValidator.apply(1L)).thenReturn(account);
     Mockito.when(
-        operationFactory.getOperation(
-            TransactionType.INITIAL, transactionRepository, accountRepository))
+            operationFactory.getOperation(
+                TransactionType.INITIAL, transactionRepository, accountRepository))
         .thenReturn(initialCreditOperation);
 
     Mockito.when(initialCreditOperation.apply(transaction, account)).thenReturn(newTransaction);
@@ -214,13 +207,51 @@ public class TransactionServiceTest {
     Account account = new Account();
     account.setId(1L);
     account.setBalance(200d);
-    account.setType(AccountType.CREDIT);
+    account.setType(AccountType.CURRENT);
     account.setCustomer(customer);
 
     Transaction transaction = new Transaction();
     transaction.setId(1L);
     transaction.setAmount(100d);
     transaction.setType(TransactionType.CREDIT);
+    transaction.setAccount(account);
+
+    Mockito.when(accountExistsValidator.apply(1L)).thenReturn(account);
+    Mockito.when(transactionExistValidator.apply(1L)).thenReturn(transaction);
+
+    transactionService.setRevertTransactionValidation(revertTransactionValidation);
+
+    Mockito.when(revertTransactionValidation.isValid(account, transaction)).thenReturn(true);
+
+    Transaction newTransaction = new Transaction();
+    newTransaction.setId(2L);
+    newTransaction.setAccount(account);
+    newTransaction.setStatus(TxStatus.REVERT);
+
+    Mockito.when(accountRepository.save(account)).thenReturn(account);
+    Mockito.when(transactionRepository.save(transaction)).thenReturn(newTransaction);
+
+    Transaction result = transactionService.revertTransaction(1L, 1L);
+    Assert.assertEquals(TxStatus.REVERT, result.getStatus());
+    Assert.assertEquals(100d, result.getAccount().getBalance(), 0);
+  }
+
+  @Test
+  public void revertInitialTransaction() {
+    Customer customer = new Customer();
+    customer.setAccountList(new ArrayList<>());
+    customer.setId(1L);
+
+    Account account = new Account();
+    account.setId(1L);
+    account.setBalance(200d);
+    account.setType(AccountType.CURRENT);
+    account.setCustomer(customer);
+
+    Transaction transaction = new Transaction();
+    transaction.setId(1L);
+    transaction.setAmount(100d);
+    transaction.setType(TransactionType.INITIAL);
     transaction.setAccount(account);
 
     Mockito.when(accountExistsValidator.apply(1L)).thenReturn(account);
@@ -252,7 +283,7 @@ public class TransactionServiceTest {
     Account account = new Account();
     account.setId(1L);
     account.setBalance(200d);
-    account.setType(AccountType.CREDIT);
+    account.setType(AccountType.CURRENT);
     account.setCustomer(customer);
 
     Transaction transaction = new Transaction();
@@ -290,7 +321,7 @@ public class TransactionServiceTest {
     Account account = new Account();
     account.setId(1L);
     account.setBalance(100d);
-    account.setType(AccountType.CREDIT);
+    account.setType(AccountType.CURRENT);
     account.setCustomer(customer);
 
     Transaction transaction = new Transaction();

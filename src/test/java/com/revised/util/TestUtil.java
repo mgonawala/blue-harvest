@@ -17,7 +17,7 @@ public class TestUtil {
       Account account = new Account();
       account.setId((long) i);
       account.setBalance(100);
-      account.setType(AccountType.CREDIT);
+      account.setType(AccountType.CURRENT);
       account.setCustomer(new Customer());
       account.getCustomer().setId((long) i);
       accounts.add(account);

@@ -21,14 +21,10 @@ public class CustomerExistValidation implements Function<Long, Customer> {
 
   /** Dependencies * */
 
-  /**
-   * Logger *
-   */
+  /** Logger * */
   private static final Logger logger = LogManager.getLogger(CustomerExistValidation.class);
 
-  /**
-   * Customer Repository for DAO access *
-   */
+  /** Customer Repository for DAO access * */
   CustomerRepository customerRepository;
 
   @Autowired

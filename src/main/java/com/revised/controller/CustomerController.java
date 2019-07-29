@@ -42,22 +42,14 @@ public class CustomerController {
 
   /** Dependencies * */
 
-  /**
-   * Logger *
-   */
+  /** Logger * */
   private static final Logger logger = LogManager.getLogger(CustomerController.class);
 
-  /**
-   * ModelMapper used to map DTO objects to Entity *
-   */
-  @Autowired
-  private ModelMapper modelMapper;
+  /** ModelMapper used to map DTO objects to Entity * */
+  @Autowired private ModelMapper modelMapper;
 
-  /**
-   * Account service carrying business login *
-   */
-  @Autowired
-  private ICustomerService customerService;
+  /** Account service carrying business login * */
+  @Autowired private ICustomerService customerService;
 
   /**
    * Finds all available customers.

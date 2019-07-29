@@ -2,6 +2,7 @@ package com.revised.validation;
 
 import com.revised.model.Account;
 import com.revised.model.Transaction;
+import com.revised.model.TxStatus;
 import com.revised.repository.AccountRepository;
 import com.revised.repository.TransactionRepository;
 import java.util.function.BiFunction;
@@ -13,9 +14,7 @@ import java.util.function.BiFunction;
  */
 public class DebitOperation implements BiFunction<Transaction, Account, Transaction> {
 
-  /**
-   * Account repository for DAO access *
-   */
+  /** Account repository for DAO access * */
   private AccountRepository accountRepository;
 
   /** Transaction repository for DAO access * */
@@ -34,6 +33,7 @@ public class DebitOperation implements BiFunction<Transaction, Account, Transact
     balance = balance - transaction.getAmount();
     account.setBalance(balance);
     accountRepository.save(account);
+    transaction.setStatus(TxStatus.SUCCESS);
     return transactionRepository.save(transaction);
   }
 }
