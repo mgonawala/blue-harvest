@@ -2,3 +2,12 @@ language: java
 jdk:
   - openjdk8
 services: hsqldb
+
+addons:
+  sonarcloud:
+    organization: "blue-harvest"
+    token: "08775b091bce5062c82c849c5d929d83f7639a51"
+
+script:
+  - ./mvnw clean install -B
+  - ./mvnw clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
