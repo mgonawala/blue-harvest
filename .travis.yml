@@ -27,3 +27,5 @@ deploy:
   provider: heroku
   api_key: "6d1f4c8e-79f8-487f-9a19-ec98f4caea82"
   app: blue-harvest-mohini
+
+cache: bundler
