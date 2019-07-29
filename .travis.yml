@@ -1,7 +1,10 @@
 language: java
 jdk:
   - openjdk8
-services: hsqldb
+sudo: required
+services:
+  - hsqldb
+  - docker
 
 addons:
   sonarcloud:
@@ -11,3 +14,16 @@ addons:
 script:
   - ./mvnw clean install -B
   - ./mvnw clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
+
+after_success:
+  - docker login -u "mohinigonawala90" -p "mo1hi2ni3"
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH; fi`
+  - export IMAGE_NAME=blue-harvest/bankapis
+  - docker build -t $IMAGE_NAME:$COMMIT .
+  - docker tag $IMAGE_NAME:$COMMIT $IMAGE_NAME:$TAG
+  - docker push $IMAGE_NAME
+
+deploy:
+  provider: heroku
+  api_key: "6d1f4c8e-79f8-487f-9a19-ec98f4caea82"
+  app: blue-harvest-mohini
