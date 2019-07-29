@@ -107,7 +107,7 @@ public class ApplicationDemo extends SpringBootServletInitializer {
     return strategy;
   }
 
-  @Bean
+  /*@Bean
   @Profile("dev")
   @ConditionalOnProperty(value = "customers.stub", havingValue = "true", matchIfMissing = false)
   CommandLineRunner runner(ICustomerService customerService, IAccountService accountService) {
@@ -134,5 +134,5 @@ public class ApplicationDemo extends SpringBootServletInitializer {
         System.out.println("Unable to save Accounts: " + e.getMessage());
       }
     };
-  }
+  }*/
 }
