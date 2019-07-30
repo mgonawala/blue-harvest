@@ -87,7 +87,7 @@ public class CustomerController {
   @ApiOperation(value = "Operation to create a new customer.")
   public ResponseEntity<Customer> createNewCustomer(@Valid @RequestBody CustomerDto customer) {
     logger.info("Request to register a new customer.");
-    logger.debug("Customer Request:{}", customer.toString());
+    logger.debug("Customer Request:{}", customer);
     return new ResponseEntity<>(
         customerService.createNewCustomer(modelMapper.map(customer, Customer.class)),
         HttpStatus.CREATED);
@@ -107,7 +107,7 @@ public class CustomerController {
       BindingResult bindingResult,
       @PathVariable Long id) {
     logger.info("Update details of customer:{}", id);
-    logger.debug("Customer request:" + customer.toString());
+    logger.debug("Customer request:{}" , customer);
     return new ResponseEntity<>(
         customerService.updateCustomer(modelMapper.map(customer, Customer.class), id),
         HttpStatus.OK);

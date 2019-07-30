@@ -80,7 +80,7 @@ public class AccountController {
   public ResponseEntity<Account> createNewAccount(
       @RequestBody @Valid AccountDto account, @PathVariable Long id) {
     logger.info("Create a new account for customer:{}", id);
-    logger.debug("Account Request:{}" + account);
+    logger.debug("Account Request:{}" , account);
     return new ResponseEntity<>(
         accountService.createNewAccount(modelMapper.map(account, Account.class), id),
         HttpStatus.CREATED);
