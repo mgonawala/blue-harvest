@@ -18,7 +18,7 @@ public class AccountTypeNotExistsValidator implements DualValidator<Account, Cus
   @Override
   public boolean isValid(Account account, Customer customer) {
     return !customer.getAccountList().stream()
-        .map(a -> a.getType())
+        .map(Account::getType)
         .collect(Collectors.toSet())
         .contains(account.getType());
   }

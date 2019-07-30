@@ -14,6 +14,7 @@ import javax.persistence.UniqueConstraint;
 public class Customer extends DateAudit {
 
   @OneToMany(mappedBy = "customer")
+  private
   List<Account> accountList;
 
   @GeneratedValue(strategy = GenerationType.IDENTITY)

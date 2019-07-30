@@ -1,11 +1,12 @@
 package com.revised.service;
 
-import com.revised.exception.CustomerExistsException;
-import com.revised.exception.ResourceNotFoundException;
+
 import com.revised.model.Customer;
 import java.util.List;
 
 public interface ICustomerService {
+
+  String CUSTOMER_ID_IS_NOT_FOUND = "Customer Id is not found:";
 
   static Customer parseUpdateRequest(Customer response, Customer request) {
     if (request.getFirstName() != null && !request.getFirstName().isEmpty()) {
@@ -22,11 +23,11 @@ public interface ICustomerService {
 
   List<Customer> findAllCustomers();
 
-  Customer findCustomerById(Long id) throws ResourceNotFoundException;
+  Customer findCustomerById(Long id);
 
-  Customer createNewCustomer(Customer customer) throws CustomerExistsException;
+  Customer createNewCustomer(Customer customer);
 
-  Customer updateCustomer(Customer customer, Long id) throws ResourceNotFoundException;
+  Customer updateCustomer(Customer customer, Long id);
 
-  void deleteCustomer(Long id) throws ResourceNotFoundException;
+  void deleteCustomer(Long id);
 }

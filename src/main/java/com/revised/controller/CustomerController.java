@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(
     value = "/api/v1/customers",
     produces = {MediaType.APPLICATION_JSON_VALUE})
-@Api(description = "Operations pertaining to Customers in Banking.")
+@Api(value = "Operations pertaining to Customers in Banking.")
 public class CustomerController {
 
   /** Dependencies * */
@@ -60,7 +60,7 @@ public class CustomerController {
   @ApiOperation(value = "Operation to find all the customers of Bank.")
   public ResponseEntity<List<Customer>> findAllCustomers() {
     logger.info("Get all customers' details.");
-    return new ResponseEntity<List<Customer>>(customerService.findAllCustomers(), HttpStatus.OK);
+    return new ResponseEntity<>(customerService.findAllCustomers(), HttpStatus.OK);
   }
 
   /**
@@ -74,7 +74,7 @@ public class CustomerController {
   @GetMapping("/{id}")
   public ResponseEntity<Customer> findCustomerById(@Valid @Min(value = 1) @PathVariable Long id) {
     logger.info("Find details of customer:{}", id);
-    return new ResponseEntity<Customer>(customerService.findCustomerById(id), HttpStatus.OK);
+    return new ResponseEntity<>(customerService.findCustomerById(id), HttpStatus.OK);
   }
 
   /**
@@ -88,7 +88,7 @@ public class CustomerController {
   public ResponseEntity<Customer> createNewCustomer(@Valid @RequestBody CustomerDto customer) {
     logger.info("Request to register a new customer.");
     logger.debug("Customer Request:{}", customer.toString());
-    return new ResponseEntity<Customer>(
+    return new ResponseEntity<>(
         customerService.createNewCustomer(modelMapper.map(customer, Customer.class)),
         HttpStatus.CREATED);
   }
@@ -108,7 +108,7 @@ public class CustomerController {
       @PathVariable Long id) {
     logger.info("Update details of customer:{}", id);
     logger.debug("Customer request:" + customer.toString());
-    return new ResponseEntity<Customer>(
+    return new ResponseEntity<>(
         customerService.updateCustomer(modelMapper.map(customer, Customer.class), id),
         HttpStatus.OK);
   }
@@ -121,7 +121,7 @@ public class CustomerController {
    */
   @DeleteMapping("/{id}")
   @ApiOperation(value = "operation to delete a customer.")
-  public ResponseEntity<?> deleteCustomer(@Valid @Min(value = 1) @PathVariable Long id) {
+  public ResponseEntity deleteCustomer(@Valid @Min(value = 1) @PathVariable Long id) {
     logger.info("Delete customer:{}", id);
     customerService.deleteCustomer(id);
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);

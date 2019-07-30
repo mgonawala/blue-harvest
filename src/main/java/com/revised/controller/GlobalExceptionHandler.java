@@ -27,6 +27,12 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
+  public static final String TIMESTAMP = "timestamp";
+  public static final String STATUS = "status";
+  public static final String ERRORS = "errors";
+  public static final String ERROR_IN_VALIDATION = "Error in validation.";
+  public static final String VALIDATION_ERRORS = "Validation errors:";
+
   /**
    * Catches validation exception thrown by Spring validator framework.
    *
@@ -43,17 +49,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
       HttpStatus status,
       WebRequest request) {
     Map<String, Object> body = new LinkedHashMap<>();
-    body.put("timestamp", new Date());
-    body.put("status", status.value());
+    body.put(TIMESTAMP, new Date());
+    body.put(STATUS, status.value());
     // Get all errors
     List<String> errors =
         ex.getBindingResult().getFieldErrors().stream()
             .map(x -> x.getField() + " " + x.getDefaultMessage())
             .collect(Collectors.toList());
 
-    body.put("errors", errors);
-    logger.info("Error in validation.");
-    logger.debug("Validation errors:" + errors);
+    body.put(ERRORS, errors);
+    logger.info(ERROR_IN_VALIDATION);
+    logger.debug(VALIDATION_ERRORS + errors);
     return new ResponseEntity<>(body, headers, status);
   }
 
@@ -65,13 +71,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
    */
   @org.springframework.web.bind.annotation.ExceptionHandler(ConstraintViolationException.class)
   public ResponseEntity<Object> constraintViolationException(
-      ConstraintViolationException ex, HttpServletResponse response) throws IOException {
+      ConstraintViolationException ex, HttpServletResponse response) {
     Map<String, Object> body = new LinkedHashMap<>();
-    body.put("timestamp", new Date());
-    body.put("status", HttpStatus.NOT_FOUND.value());
-    body.put("errors", Arrays.asList(ex.getMessage()));
-    logger.info("Error in validation.");
-    logger.debug("Validation errors:" + ex.getMessage());
+    body.put(TIMESTAMP, new Date());
+    body.put(STATUS, HttpStatus.NOT_FOUND.value());
+    body.put(ERRORS, Arrays.asList(ex.getMessage()));
+    logger.info(ERROR_IN_VALIDATION);
+    logger.debug(VALIDATION_ERRORS + ex.getMessage());
     return new ResponseEntity(body, HttpStatus.BAD_REQUEST);
   }
 
@@ -79,11 +85,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   public final ResponseEntity<Object> handleUserNotFoundException(
       ResourceNotFoundException ex, WebRequest request) {
     Map<String, Object> body = new LinkedHashMap<>();
-    body.put("timestamp", new Date());
-    body.put("status", HttpStatus.NOT_FOUND.value());
-    body.put("errors", Arrays.asList(ex.getMessage()));
-    logger.info("Error in validation.");
-    logger.debug("Validation errors:" + ex.getMessage());
+    body.put(TIMESTAMP, new Date());
+    body.put(STATUS, HttpStatus.NOT_FOUND.value());
+    body.put(ERRORS, Arrays.asList(ex.getMessage()));
+    logger.info(ERROR_IN_VALIDATION);
+    logger.debug(VALIDATION_ERRORS + ex.getMessage());
     return new ResponseEntity(body, HttpStatus.NOT_FOUND);
   }
 
@@ -95,11 +101,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   })
   public final ResponseEntity<Object> customerNotFound(Exception ex, WebRequest request) {
     Map<String, Object> body = new LinkedHashMap<>();
-    body.put("timestamp", new Date());
-    body.put("status", HttpStatus.BAD_REQUEST.value());
-    body.put("errors", Arrays.asList(ex.getMessage()));
-    logger.info("Error in validation.");
-    logger.debug("Validation errors:" + ex.getMessage());
+    body.put(TIMESTAMP, new Date());
+    body.put(STATUS, HttpStatus.BAD_REQUEST.value());
+    body.put(ERRORS, Arrays.asList(ex.getMessage()));
+    logger.info(ERROR_IN_VALIDATION);
+    logger.debug(VALIDATION_ERRORS + ex.getMessage());
     return new ResponseEntity(body, HttpStatus.NOT_FOUND);
   }
 }

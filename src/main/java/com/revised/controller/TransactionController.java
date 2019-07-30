@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(
     value = "/api/v1",
     produces = {MediaType.APPLICATION_JSON_VALUE})
-@Api(description = "Operations pertaining to Transaction in Banking.")
+@Api(value = "Operations pertaining to Transaction in Banking.")
 public class TransactionController {
 
   /** Dependencies * */

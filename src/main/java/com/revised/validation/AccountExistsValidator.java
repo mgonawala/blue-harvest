@@ -5,6 +5,7 @@ import com.revised.model.Account;
 import com.revised.repository.AccountRepository;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.LongFunction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Component;
  * @author <a href="mailto:mohini.gonawala90@gmail.com">Mohini Gonawala</a>
  */
 @Component
-public class AccountExistsValidator implements Function<Long, Account> {
+public class AccountExistsValidator implements LongFunction<Account> {
 
   /** Dependencies * */
 
@@ -40,7 +41,7 @@ public class AccountExistsValidator implements Function<Long, Account> {
    * @throws ResourceNotFoundException
    */
   @Override
-  public Account apply(Long id) {
+  public Account apply(long id) {
     Optional<Account> byId = accountRepository.findById(id);
     if (byId.isPresent()) {
       logger.debug("AccountExistsValidator:true");

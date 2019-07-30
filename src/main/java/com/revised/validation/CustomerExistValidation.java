@@ -5,6 +5,7 @@ import com.revised.model.Customer;
 import com.revised.repository.CustomerRepository;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.LongFunction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Component;
  * @author <a href="mailto:mohini.gonawala90@gmail.com">Mohini Gonawala</a>
  */
 @Component
-public class CustomerExistValidation implements Function<Long, Customer> {
+public class CustomerExistValidation implements LongFunction<Customer> {
 
   /** Dependencies * */
 
@@ -40,7 +41,7 @@ public class CustomerExistValidation implements Function<Long, Customer> {
    * @throws ResourceNotFoundException
    */
   @Override
-  public Customer apply(Long id) {
+  public Customer apply(long id) {
     Optional<Customer> byId = customerRepository.findById(id);
     if (byId.isPresent()) {
       logger.debug("Customer is valid:{}", id);

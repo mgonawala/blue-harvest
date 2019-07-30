@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(
     value = "/api/v1",
     produces = {MediaType.APPLICATION_JSON_VALUE})
-@Api(value = "banking", description = "Operations pertaining to Accounts in Banking.")
+@Api(value = "Operations pertaining to Accounts in Banking.")
 public class AccountController {
 
   /** Dependencies * */
@@ -122,7 +122,7 @@ public class AccountController {
    */
   @ApiOperation(value = "Operation to delete an account.")
   @DeleteMapping("/customers/{cid}/accounts/{aid}")
-  public ResponseEntity<?> deleteAccount(
+  public ResponseEntity deleteAccount(
       @Valid @PathVariable("cid") @Min(1) Long customerId,
       @PathVariable("aid") @Min(1) Long accountId) {
     logger.info("Delete account {} of customer {}", accountId, customerId);

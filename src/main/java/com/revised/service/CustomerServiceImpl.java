@@ -46,12 +46,12 @@ public class CustomerServiceImpl implements ICustomerService {
    * @throws ResourceNotFoundException
    */
   @Override
-  public Customer findCustomerById(Long id) throws ResourceNotFoundException {
+  public Customer findCustomerById(Long id) {
     Customer result =
         customerRepository
             .findById(id)
             .map(customer -> customer)
-            .orElseThrow(() -> new ResourceNotFoundException("Customer Id is not found:" + id));
+            .orElseThrow(() -> new ResourceNotFoundException(CUSTOMER_ID_IS_NOT_FOUND + id));
     logger.debug("Customer result:{}", result);
     return result;
   }
@@ -64,7 +64,7 @@ public class CustomerServiceImpl implements ICustomerService {
    * @throws CustomerExistsException
    */
   @Override
-  public Customer createNewCustomer(Customer customer) throws CustomerExistsException {
+  public Customer createNewCustomer(Customer customer) {
     if (customerRepository.findByEmail(customer.getEmail()).isPresent()) {
       throw new CustomerExistsException(
           "Customer with the given email already exists:" + customer.getEmail());
@@ -84,16 +84,12 @@ public class CustomerServiceImpl implements ICustomerService {
    * @throws ResourceNotFoundException
    */
   @Override
-  public Customer updateCustomer(Customer customer, Long id) throws ResourceNotFoundException {
+  public Customer updateCustomer(Customer customer, Long id) {
     Customer result =
         customerRepository
             .findById(id)
-            .map(
-                cus -> {
-                  return customerRepository.save(
-                      ICustomerService.parseUpdateRequest(cus, customer));
-                })
-            .orElseThrow(() -> new ResourceNotFoundException("Customer Id is not found:" + id));
+            .map(cus -> customerRepository.save(ICustomerService.parseUpdateRequest(cus, customer)))
+            .orElseThrow(() -> new ResourceNotFoundException(CUSTOMER_ID_IS_NOT_FOUND + id));
     logger.debug("Customer Result:{}", result);
     logger.info("Customer created successfully:{}", result.getId());
     return result;
@@ -106,15 +102,11 @@ public class CustomerServiceImpl implements ICustomerService {
    * @throws ResourceNotFoundException
    */
   @Override
-  public void deleteCustomer(Long id) throws ResourceNotFoundException {
-    customerRepository
+  public void deleteCustomer(Long id) {
+    Customer customer = customerRepository
         .findById(id)
-        .map(
-            customer -> {
-              customerRepository.delete(customer);
-              return customer;
-            })
-        .orElseThrow(() -> new ResourceNotFoundException("Customer Id is not found:" + id));
-    logger.info("Customer deleyed successfully:{}", id);
+        .orElseThrow(() -> new ResourceNotFoundException(CUSTOMER_ID_IS_NOT_FOUND + id));
+    customerRepository.delete(customer);
+    logger.info("Customer deleted successfully:{}", id);
   }
 }

@@ -32,6 +32,7 @@ public class AccountServiceImpl implements IAccountService {
 
   /** Logger * */
   private static final Logger logger = LogManager.getLogger(AccountServiceImpl.class);
+  public static final String CUSTOMER_VALIDATION_TRUE = "Customer validation: true";
 
   /** Account repository for Dao access * */
   @Autowired private AccountRepository accountRepository;
@@ -67,9 +68,9 @@ public class AccountServiceImpl implements IAccountService {
    * @throws ResourceNotFoundException
    */
   @Override
-  public List<Account> findAllAccountsOfCustomer(Long id) throws ResourceNotFoundException {
+  public List<Account> findAllAccountsOfCustomer(Long id) {
     Customer customer = customerExistValidation.apply(id);
-    logger.info("Customer validation: true");
+    logger.info(CUSTOMER_VALIDATION_TRUE);
     List<Account> accountList = customer.getAccountList();
     logger.info("Accounts List:", accountList.size());
     logger.debug("Accounts:{}", accountList);
@@ -86,10 +87,10 @@ public class AccountServiceImpl implements IAccountService {
    */
   @Override
   public Account createNewAccount(Account account, Long customerId)
-      throws AccountAlreadyExistsException {
+       {
 
     Customer cus = customerExistValidation.apply(customerId);
-    logger.info("Customer validation: true");
+    logger.info(CUSTOMER_VALIDATION_TRUE);
     if (createAccountValidationStrategy.isValid(account, cus)) {
       logger.info("Create Account constrains are met.");
       account.setCustomer(cus);
@@ -119,9 +120,9 @@ public class AccountServiceImpl implements IAccountService {
    * @throws ResourceNotFoundException
    */
   @Override
-  public void deleteAccount(Long accountId, Long customerId) throws ResourceNotFoundException {
-    Customer customer = customerExistValidation.apply(customerId);
-    logger.info("Customer validation: true");
+  public void deleteAccount(Long accountId, Long customerId) {
+    customerExistValidation.apply(customerId);
+    logger.info(CUSTOMER_VALIDATION_TRUE);
     Account account = accountExistsValidator.apply(accountId);
     logger.info("Account validation: true");
     accountRepository.delete(account);
@@ -129,8 +130,8 @@ public class AccountServiceImpl implements IAccountService {
   }
 
   @Override
-  public void deleteAccount(Long accountId) throws ResourceNotFoundException {
-    Account account = accountExistsValidator.apply(accountId);
+  public void deleteAccount(Long accountId) {
+    accountExistsValidator.apply(accountId);
     logger.info("Account validation: true");
     accountRepository.deleteById(accountId);
     logger.info("Account deleted:true");
@@ -144,7 +145,7 @@ public class AccountServiceImpl implements IAccountService {
    * @throws ResourceNotFoundException
    */
   @Override
-  public Account findAccountById(Long id) throws ResourceNotFoundException {
+  public Account findAccountById(Long id)  {
     return accountExistsValidator.apply(id);
   }
 

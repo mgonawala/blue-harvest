@@ -1,22 +1,20 @@
 package com.revised.service;
 
-import com.revised.exception.AccountAlreadyExistsException;
-import com.revised.exception.ResourceNotFoundException;
 import com.revised.model.Account;
 import com.revised.validation.strategy.IValidationStrategy;
 import java.util.List;
 
 public interface IAccountService {
 
-  List<Account> findAllAccountsOfCustomer(Long id) throws ResourceNotFoundException;
+  List<Account> findAllAccountsOfCustomer(Long id);
 
-  Account createNewAccount(Account account, Long customerId) throws AccountAlreadyExistsException;
+  Account createNewAccount(Account account, Long customerId) ;
 
-  void deleteAccount(Long accountId, Long customerId) throws ResourceNotFoundException;
+  void deleteAccount(Long accountId, Long customerId) ;
 
-  void deleteAccount(Long accountId) throws ResourceNotFoundException;
+  void deleteAccount(Long accountId);
 
-  Account findAccountById(Long id) throws ResourceNotFoundException;
+  Account findAccountById(Long id);
 
   List<Account> findAllAccounts();
 
