@@ -80,7 +80,7 @@ public class TransactionController {
   public ResponseEntity<Transaction> commitTransaction(
       @RequestBody @Valid TransactionDto transaction, @Valid @PathVariable @Min(1) Long id) {
     logger.info("Perform a new transaction of account:{}", id);
-    logger.debug("Transaction request:{}" , transaction.toString());
+    logger.debug("Transaction request:{}" , transaction);
     return new ResponseEntity<>(
         transactionService.commitTransaction(modelMapper.map(transaction, Transaction.class), id),
         HttpStatus.CREATED);
