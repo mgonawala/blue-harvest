@@ -19,7 +19,7 @@ public class InitialCreditOperationTest {
   @Mock private TransactionRepository transactionRepository;
 
   @Test
-  public void testValid() {
+  public void apply_InitialCredit_RetrurnsSuccessStatus() {
 
     InitialCreditOperation initialCreditOperation =
         new InitialCreditOperation(transactionRepository);

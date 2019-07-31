@@ -9,7 +9,7 @@ import org.junit.Test;
 public class EnoughAccountBalanceValidatorTest {
 
   @Test
-  public void test() {
+  public void isValid_CreditTransactionAmountGTAccountBalance_ReturnsTrue() {
     Account account = new Account();
     account.setBalance(101d);
     Transaction transaction = new Transaction();
@@ -21,7 +21,7 @@ public class EnoughAccountBalanceValidatorTest {
   }
 
   @Test
-  public void testInitialValid() {
+  public void isValid_InitialTransactionAmountGTAccountBalance_ReturnsTrue() {
     Account account = new Account();
     account.setBalance(101d);
     Transaction transaction = new Transaction();
@@ -33,7 +33,7 @@ public class EnoughAccountBalanceValidatorTest {
   }
 
   @Test
-  public void zeroBalance() {
+  public void isValid_CreditTransactionAmountEqualsAccountBalance_ReturnsTrue() {
     Account account = new Account();
     account.setBalance(100d);
     Transaction transaction = new Transaction();
@@ -45,7 +45,7 @@ public class EnoughAccountBalanceValidatorTest {
   }
 
   @Test
-  public void InitialCreditZeroBalance() {
+  public void isValid_InitialTransactionAmountEqualsAccountBalance_ReturnsTrue() {
     Account account = new Account();
     account.setBalance(100d);
     Transaction transaction = new Transaction();
@@ -57,7 +57,7 @@ public class EnoughAccountBalanceValidatorTest {
   }
 
   @Test
-  public void invalid() {
+  public void isValid_CreditTransactionAccountBalanceLTTransactionAmount_ReturnsFalse() {
     Account account = new Account();
     account.setBalance(99d);
     Transaction transaction = new Transaction();
@@ -69,7 +69,7 @@ public class EnoughAccountBalanceValidatorTest {
   }
 
   @Test
-  public void invalidRevertWhenInitialType() {
+  public void isValid_InitialTransactionAccountBalanceLTTransactionAmount_ReturnsFalse() {
     Account account = new Account();
     account.setBalance(99d);
     Transaction transaction = new Transaction();
@@ -81,7 +81,7 @@ public class EnoughAccountBalanceValidatorTest {
   }
 
   @Test
-  public void testRevertOperationWithDebitTypeTransaction() {
+  public void isValid_DebitTransactionAccountBalanceLTTransactionAmount_ReturnsTrue() {
     Account account = new Account();
     account.setBalance(99d);
     Transaction transaction = new Transaction();

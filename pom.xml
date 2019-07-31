@@ -38,7 +38,6 @@
           <dataFile>${basedir}/target/coverage-reports/jacoco-unit.exec</dataFile>
           <destFile>${basedir}/target/coverage-reports/jacoco-unit.exec</destFile>
           <excludes>
-
             <exclude>com/revised/exception/*</exclude>
             <exclude>com/revised/ApplicationDemo*</exclude>
           </excludes>

@@ -74,11 +74,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
       DataIntegrityViolationException ex, HttpServletResponse response) {
     Map<String, Object> body = new LinkedHashMap<>();
     body.put(TIMESTAMP, new Date());
-    body.put(STATUS, HttpStatus.NOT_FOUND.value());
+    body.put(STATUS, HttpStatus.CONFLICT.value());
     body.put(ERRORS, Arrays.asList(ex.getMessage()));
     logger.info(ERROR_IN_VALIDATION);
     logger.debug(VALIDATION_ERRORS + ex.getMessage());
-    return new ResponseEntity(body, HttpStatus.BAD_REQUEST);
+    return new ResponseEntity(body, HttpStatus.CONFLICT);
   }
 
   @ExceptionHandler(ResourceNotFoundException.class)
@@ -111,7 +111,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
       CustomerExistsException.class,
       AccountAlreadyExistsException.class
   })
-  public final ResponseEntity<Object> customerNotFound(Exception ex, WebRequest request) {
+  public final ResponseEntity<Object> customerExistException(Exception ex, WebRequest request) {
     Map<String, Object> body = new LinkedHashMap<>();
     body.put(TIMESTAMP, new Date());
     body.put(STATUS, HttpStatus.CONFLICT.value());

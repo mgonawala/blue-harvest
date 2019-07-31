@@ -23,7 +23,7 @@ public class DebitOperationTest {
   @Mock private TransactionRepository transactionRepository;
 
   @Test
-  public void testValid() {
+  public void apply_DebitOperation_ReturnsSuccessStatus() {
 
     DebitOperation debitOperation = new DebitOperation(accountRepository, transactionRepository);
     Transaction transaction = TestUtil.getTransaction(1).get(0);

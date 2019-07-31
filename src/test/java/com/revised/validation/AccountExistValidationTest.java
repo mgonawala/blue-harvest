@@ -23,7 +23,7 @@ public class AccountExistValidationTest {
   @MockBean private AccountRepository accountRepository;
 
   @Test
-  public void valid() {
+  public void apply_AccountExist_ReturnsTrue() {
     Account account = TestUtil.getAccountList(1).get(0);
     Optional<Account> mock = Optional.of(account);
     Mockito.when(accountRepository.findById(1L)).thenReturn(mock);
@@ -31,7 +31,7 @@ public class AccountExistValidationTest {
   }
 
   @Test(expected = ResourceNotFoundException.class)
-  public void invalid() {
+  public void apply_AccountNotExist_ThrowsException() {
     Optional<Account> mock = Optional.empty();
     Mockito.when(accountRepository.findById(1L)).thenReturn(mock);
     validation.apply(1L);

@@ -33,8 +33,7 @@ public class GlobalExceptionHandlerTest {
   private HttpServletResponse httpResponse = Mockito.mock(HttpServletResponse.class);
 
   @Test
-  public void testMethodArgumentException() {
-
+  public void handleMethodArgumentNotValid_ReturnsBadRequestStatus() {
     exception = Mockito.mock(MethodArgumentNotValidException.class);
     bindingResult = Mockito.mock(BindingResult.class);
     Mockito.when(exception.getBindingResult()).thenReturn(bindingResult);
@@ -49,7 +48,7 @@ public class GlobalExceptionHandlerTest {
   }
 
   @Test
-  public void testConstraintValidationException() throws IOException {
+  public void constraintViolationException_ReturnsConflictStatus() throws IOException {
 
     DataIntegrityViolationException exception = Mockito.mock(DataIntegrityViolationException.class);
     Mockito.when(exception.getMessage()).thenReturn("Exception Occurred");
@@ -59,7 +58,7 @@ public class GlobalExceptionHandlerTest {
   }
 
   @Test
-  public void testResourceNotfoundException() throws IOException {
+  public void userNotFoundException_ReturnsNotFoundStatus() throws IOException {
 
     ResourceNotFoundException exception = Mockito.mock(ResourceNotFoundException.class);
     Mockito.when(exception.getMessage()).thenReturn("Exception Occurred");
@@ -69,12 +68,22 @@ public class GlobalExceptionHandlerTest {
   }
 
   @Test
-  public void testCustomerNotFoundException() throws IOException {
+  public void customerExistsException_ReturnsConflictStatsu() throws IOException {
 
     ResourceNotFoundException exception = Mockito.mock(ResourceNotFoundException.class);
     Mockito.when(exception.getMessage()).thenReturn("Exception Occurred");
     ResponseEntity<Object> result =
-        globalExceptionHandler.customerNotFound(exception, webRequest);
-    Assert.assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+        globalExceptionHandler.customerExistException(exception, webRequest);
+    Assert.assertEquals(HttpStatus.CONFLICT, result.getStatusCode());
+  }
+
+  @Test
+  public void invalidWebRequest_ReturnsBadRequestException() throws IOException {
+
+    ResourceNotFoundException exception = Mockito.mock(ResourceNotFoundException.class);
+    Mockito.when(exception.getMessage()).thenReturn("Exception Occurred");
+    ResponseEntity<Object> result =
+        globalExceptionHandler.invalidRequest(exception, webRequest);
+    Assert.assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode());
   }
 }

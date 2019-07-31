@@ -42,7 +42,7 @@ public class AccountControllerTest {
   private List<Account> mockAccounts = new ArrayList<>();
 
   @Test
-  public void testAllAccountsGetOne() throws Exception {
+  public void findAllAccounts_OneAccount_ReturnsOneAccount() throws Exception {
     mockAccounts = TestUtil.getAccountList(1);
     Mockito.when(accountService.findAllAccounts()).thenReturn(mockAccounts);
     mockMvc
@@ -52,7 +52,7 @@ public class AccountControllerTest {
   }
 
   @Test
-  public void testAllAccountsGetFive() throws Exception {
+  public void findAllAccounts_FiveAccounts_ReturnsFiveAccounts() throws Exception {
     mockAccounts = TestUtil.getAccountList(5);
     Mockito.when(accountService.findAllAccounts()).thenReturn(mockAccounts);
     mockMvc
@@ -62,7 +62,7 @@ public class AccountControllerTest {
   }
 
   @Test
-  public void testAllAccountsGetEmpty() throws Exception {
+  public void findAllAccounts_EmptyState_ReturnsNoAccount() throws Exception {
     mockAccounts = TestUtil.getAccountList(0);
     Mockito.when(accountService.findAllAccounts()).thenReturn(mockAccounts);
     mockMvc
@@ -72,7 +72,7 @@ public class AccountControllerTest {
   }
 
   @Test
-  public void getAllAccountOfCustomerValid() throws Exception {
+  public void findAllAccountsOfCustomer_OneAccount_ReturnsOneAccount() throws Exception {
 
     mockAccounts = TestUtil.getAccountList(1);
     Mockito.when(accountService.findAllAccountsOfCustomer(1L)).thenReturn(mockAccounts);
@@ -83,16 +83,16 @@ public class AccountControllerTest {
   }
 
   @Test
-  public void getAllAccountOfCustomerInvalid() throws Exception {
+  public void findAllAccountsoCustomer_CustomerInValid_ReturnsNotFoundStatus() throws Exception {
 
     mockAccounts = TestUtil.getAccountList(1);
     Mockito.when(accountService.findAllAccountsOfCustomer(1L))
         .thenThrow(new ResourceNotFoundException());
-    mockMvc.perform(get(apiGetAllAccountCustomer)).andExpect(status().is4xxClientError());
+    mockMvc.perform(get(apiGetAllAccountCustomer)).andExpect(status().isNotFound());
   }
 
   @Test
-  public void createNewAccountValid() throws Exception {
+  public void createNewAccount_ValidScenario_Returns201Status() throws Exception {
     mockAccounts = TestUtil.getAccountList(1);
     Mockito.when(accountService.createNewAccount(mockAccounts.get(0), 1L))
         .thenReturn(mockAccounts.get(0));
@@ -116,30 +116,30 @@ public class AccountControllerTest {
   }*/
 
   @Test
-  public void getAccountByIdValid() throws Exception {
+  public void findAccountById_OneAccount_ReturnsAccount() throws Exception {
     mockAccounts = TestUtil.getAccountList(1);
     Mockito.when(accountService.findAccountById(1L)).thenReturn(mockAccounts.get(0));
     mockMvc.perform(get(apiGetAccountById)).andExpect(status().isOk());
   }
 
   @Test
-  public void getAccountByIdInValid() throws Exception {
+  public void findAccountById_InvalidId_ReturnsNotFoundStatus() throws Exception {
     mockAccounts = TestUtil.getAccountList(1);
     Mockito.when(accountService.findAccountById(1L)).thenThrow(new ResourceNotFoundException());
-    mockMvc.perform(get(apiGetAccountById)).andExpect(status().is4xxClientError());
+    mockMvc.perform(get(apiGetAccountById)).andExpect(status().isNotFound());
   }
 
   @Test
-  public void deleterAccountById() throws Exception {
+  public void deleteAccount_ValidAccount_ReturnsOkStatus() throws Exception {
     mockAccounts = TestUtil.getAccountList(1);
     Mockito.doNothing().when(accountService).deleteAccount(1L, 1L);
     mockMvc.perform(delete(apiPostDeleteAccount)).andExpect(status().is2xxSuccessful());
   }
 
   @Test
-  public void deleterAccountByIdInvalid() throws Exception {
+  public void deleteAccount_InValidAccount_ReturnsNotFoundStatus() throws Exception {
     mockAccounts = TestUtil.getAccountList(1);
     Mockito.doThrow(new ResourceNotFoundException()).when(accountService).deleteAccount(1L, 1L);
-    mockMvc.perform(delete(apiPostDeleteAccount)).andExpect(status().is4xxClientError());
+    mockMvc.perform(delete(apiPostDeleteAccount)).andExpect(status().isNotFound());
   }
 }

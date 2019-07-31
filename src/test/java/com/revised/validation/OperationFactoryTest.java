@@ -25,7 +25,7 @@ public class OperationFactoryTest {
   @MockBean private AccountRepository accountRepository;
 
   @Test
-  public void getCreditOperation() {
+  public void getOperation_CreditTransactionType_ReturnsCreditOperation() {
     BiFunction<Transaction, Account, Transaction> operation =
         operationFactory.getOperation(
             TransactionType.CREDIT, transactionRepository, accountRepository);
@@ -33,7 +33,7 @@ public class OperationFactoryTest {
   }
 
   @Test
-  public void getDebitOperation() {
+  public void getOperation_DebutTransactionType_ReturnsDebitOperation() {
     BiFunction<Transaction, Account, Transaction> operation =
         operationFactory.getOperation(
             TransactionType.DEBIT, transactionRepository, accountRepository);
@@ -41,7 +41,7 @@ public class OperationFactoryTest {
   }
 
   @Test
-  public void getInitialOperation() {
+  public void getOperation_InitialTransactionType_ReturnsInitialOperation() {
     BiFunction<Transaction, Account, Transaction> operation =
         operationFactory.getOperation(
             TransactionType.INITIAL, transactionRepository, accountRepository);

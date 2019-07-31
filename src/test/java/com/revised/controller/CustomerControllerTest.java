@@ -43,7 +43,7 @@ public class CustomerControllerTest {
   private String getAllCustomers = "/api/v1/customers";
 
   @Test
-  public void testGetAllCustomers() throws Exception {
+  public void findAllCustomers_FiveAccounts_ReturnsFiveAccounts() throws Exception {
     customerList = TestUtil.getCustomers(5);
     when(customerService.findAllCustomers()).thenReturn(customerList);
     mockMvc
@@ -53,14 +53,14 @@ public class CustomerControllerTest {
   }
 
   @Test
-  public void findCustomerById() throws Exception {
+  public void findCustomerById_ValidCustomer_ReturnsOkStatus() throws Exception {
     customerList = TestUtil.getCustomers(1);
     when(customerService.findCustomerById(1L)).thenReturn(customerList.get(0));
     mockMvc.perform(get(getCustomer)).andExpect(status().isOk());
   }
 
   @Test
-  public void testGetAllCustomersEmpty() throws Exception {
+  public void findALlCustomer_EmptyState_ReturnsNoRecords() throws Exception {
     customerList = TestUtil.getCustomers(0);
     when(customerService.findAllCustomers()).thenReturn(customerList);
     mockMvc
@@ -70,7 +70,7 @@ public class CustomerControllerTest {
   }
 
   @Test
-  public void createNewCustomerValid() throws Exception {
+  public void createNewCustomer_ValidScenario_ReturnsCreatedStatus() throws Exception {
     customerList = TestUtil.getCustomers(1);
     when(customerService.createNewCustomer(customerList.get(0))).thenReturn(customerList.get(0));
     mockMvc
@@ -82,7 +82,7 @@ public class CustomerControllerTest {
   }
 
   @Test
-  public void updateCustomerDetail() throws Exception {
+  public void updateCustomer_ValidUpdation_ReturnsOkStatus() throws Exception {
 
     customerList = TestUtil.getCustomers(1);
     when(customerService.updateCustomer(customerList.get(0), 1L)).thenReturn(customerList.get(0));
@@ -95,21 +95,21 @@ public class CustomerControllerTest {
   }
 
   @Test
-  public void updateCustomerDetailInvalid() throws Exception {
+  public void updateCustomer_InvalidCustomer_ReturnsNotFoundStatus() throws Exception {
 
     customerList = TestUtil.getCustomers(1);
-    when(customerService.updateCustomer(customerList.get(0), 1L))
-        .thenThrow(new ResourceNotFoundException("Resrouce not found"));
+    when(customerService.updateCustomer(Mockito.any(Customer.class), Mockito.anyLong()))
+        .thenThrow(new ResourceNotFoundException("Resource not found"));
     mockMvc
         .perform(
-            post(getCustomer)
+            put(getCustomer)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(customerList.get(0))))
-        .andExpect(status().is4xxClientError());
+        .andExpect(status().isNotFound());
   }
 
   @Test
-  public void deleteCustomerInvalid() throws Exception {
+  public void deleteCustomer_InvalidCustomer_ReturnsNotFoundStatus() throws Exception {
 
     customerList = TestUtil.getCustomers(1);
     Mockito.doThrow(new ResourceNotFoundException("Resource not found"))
@@ -121,11 +121,11 @@ public class CustomerControllerTest {
             delete(getCustomer)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(customerList.get(0))))
-        .andExpect(status().is4xxClientError());
+        .andExpect(status().isNotFound());
   }
 
   @Test
-  public void deleteCustomer() throws Exception {
+  public void deleteCustomer_ValidCustomer_ReturnsNoContentStatus() throws Exception {
 
     customerList = TestUtil.getCustomers(1);
     Mockito.doNothing().when(customerService).deleteCustomer(1L);

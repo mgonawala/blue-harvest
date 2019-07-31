@@ -15,7 +15,6 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,7 +34,7 @@ public class AccountServiceTest {
   @MockBean private ITransactionService transactionService;
 
   @Test
-  public void findAllAccountOfCustomer() {
+  public void findAllAccountOfCustomer_FiveAccount_ReturnsFiveAccount() {
     accountList = TestUtil.getAccountList(5);
     Customer customer = new Customer();
     customer.setAccountList(accountList);
@@ -46,7 +45,7 @@ public class AccountServiceTest {
   }
 
   @Test
-  public void createNewAccount() {
+  public void createNewAccount_ValidScenario_ReturnsCreatedAccount() {
 
     Customer customer = TestUtil.getCustomers(1).get(0);
     Account account = TestUtil.getAccountList(1).get(0);
@@ -59,10 +58,11 @@ public class AccountServiceTest {
     Account result = accountService.createNewAccount(account, 1L);
 
     Assert.assertEquals(account.getType(), result.getType());
+    Assert.assertEquals(account.getId(), result.getId());
   }
 
   @Test
-  public void createNewAccountInitialBalance() {
+  public void createNewAccount_InitialCredit_ReturnsNewAccount() {
 
     Customer customer = TestUtil.getCustomers(1).get(0);
     Account account = TestUtil.getAccountList(1).get(0);
@@ -79,10 +79,11 @@ public class AccountServiceTest {
     Account result = accountService.createNewAccount(account, 1L);
 
     Assert.assertEquals(account.getType(), result.getType());
+    Assert.assertEquals(account.getId(), result.getId());
   }
 
   @Test(expected = AccountAlreadyExistsException.class)
-  public void exceptionWhenCreateAccount() {
+  public void createNewAccount_InvalidAccount_ThrowsAccountAlreadyExistsException() {
 
     Customer customer = TestUtil.getCustomers(1).get(0);
     Account account = TestUtil.getAccountList(1).get(0);
@@ -102,7 +103,7 @@ public class AccountServiceTest {
   }
 
   @Test
-  public void deleteAccount() {
+  public void deleteAccount_ValidScenario_ReturnsNothing() {
     Mockito.when(customerExistValidation.apply(1L)).thenReturn(new Customer());
 
     Mockito.when(accountExistsValidator.apply(1L)).thenReturn(new Account());
@@ -120,27 +121,27 @@ public class AccountServiceTest {
   }
 
   @Test
-  public void findByAccountId() {
+  public void findAccountById_Valid_ReturnsOneAccount() {
     Mockito.when(accountExistsValidator.apply(1L)).thenReturn(new Account());
     Assert.assertNotNull(accountService.findAccountById(1L));
   }
 
   @Test(expected = ResourceNotFoundException.class)
-  public void findByAccountIdThrowsException() {
+  public void findAccountById_Invalid_ReturnsResourceNotFoundException() {
     Mockito.when(accountExistsValidator.apply(1L))
         .thenThrow(new ResourceNotFoundException("Account is not valid."));
     Assert.assertNotNull(accountService.findAccountById(1L));
   }
 
   @Test
-  public void testFindAllAccounts() {
+  public void findAll_FiveAccounts_RetrunsFiveAccounts() {
     List<Account> accountList = TestUtil.getAccountList(5);
     Mockito.when(accountRepository.findAll()).thenReturn(accountList);
     Assert.assertEquals(5, accountList.size());
   }
 
   @Test(expected = ResourceNotFoundException.class)
-  public void deleteAccountException() {
+  public void deleteAccount_CustomerInvalid_ThrowsResourceNotFoundException() {
     Mockito.when(customerExistValidation.apply(1L))
         .thenThrow(new ResourceNotFoundException("Customer is not valid."));
 
@@ -150,7 +151,7 @@ public class AccountServiceTest {
   }
 
   @Test(expected = ResourceNotFoundException.class)
-  public void deleteAccountException2() {
+  public void deleteAccount_AccountInvalid_ThrowsResoruceNotFoundException() {
     Mockito.when(accountExistsValidator.apply(1L))
         .thenThrow(new ResourceNotFoundException("Account is not valid."));
 

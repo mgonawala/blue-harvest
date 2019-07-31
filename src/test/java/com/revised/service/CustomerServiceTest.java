@@ -26,7 +26,7 @@ public class CustomerServiceTest {
   @MockBean private CustomerRepository customerRepository;
 
   @Test
-  public void testFindByCustomerId() {
+  public void findByCustomerId_OneCustomer_ReturnsOneCustomer() {
     customerList = TestUtil.getCustomers(1);
     Customer expected = customerList.get(0);
 
@@ -41,7 +41,7 @@ public class CustomerServiceTest {
   }
 
   @Test
-  public void createNewCustomer() {
+  public void createNewCustomer_ValidCustomer_ReturnsCreatedCustomer() {
     customerList = TestUtil.getCustomers(1);
     Customer expected = customerList.get(0);
 
@@ -59,7 +59,7 @@ public class CustomerServiceTest {
   }
 
   @Test
-  public void updateCustomerDetails() {
+  public void updateCustomer_ValidScenario_ReturnsUpdatedCustomer() {
     customerList = TestUtil.getCustomers(1);
     Customer expected = customerList.get(0);
 
@@ -77,7 +77,7 @@ public class CustomerServiceTest {
   }
 
   @Test
-  public void deleteCustomer() {
+  public void deleteCustomer_ValidScenario_ReturnsNothing() {
     customerList = TestUtil.getCustomers(1);
     Customer expected = customerList.get(0);
 
@@ -89,7 +89,7 @@ public class CustomerServiceTest {
   }
 
   @Test(expected = ResourceNotFoundException.class)
-  public void exectionWhenInvalidId() {
+  public void findByCustomerId_InvalidId_ThrowsResourceNotFoundException() {
     customerList = TestUtil.getCustomers(1);
     Customer expected = customerList.get(0);
 
@@ -98,7 +98,7 @@ public class CustomerServiceTest {
   }
 
   @Test(expected = CustomerExistsException.class)
-  public void exeptionWhenEmailExists() {
+  public void createNewCustomer_InvalidCustomer_ThrowsCustomerExistException() {
     customerList = TestUtil.getCustomers(1);
     Customer expected = customerList.get(0);
 
@@ -118,7 +118,7 @@ public class CustomerServiceTest {
   }
 
   @Test(expected = ResourceNotFoundException.class)
-  public void exceptionInDeleteWithInvalidCustomerId() {
+  public void deleteCustomer_InvalidCustomer_ReturnsResourceNotFoundException() {
     customerList = TestUtil.getCustomers(1);
     Customer expected = customerList.get(0);
 
@@ -127,7 +127,7 @@ public class CustomerServiceTest {
   }
 
   @Test
-  public void findAllCustomer() {
+  public void findAllCustomer_ThreeCustomers_ReturnsThreeRecords() {
     List<Customer> customers = TestUtil.getCustomers(3);
     Mockito.when(customerRepository.findAll()).thenReturn(customers);
     List<Customer> result = customerService.findAllCustomers();
@@ -135,7 +135,7 @@ public class CustomerServiceTest {
   }
 
   @Test
-  public void parseUpdateWithNullFirstName() {
+  public void parseUpdateRequest_FirstNameNull_ShouldNotChange() {
     Customer request = TestUtil.getCustomers(1).get(0);
     Customer response = TestUtil.getCustomers(1).get(0);
 
@@ -146,7 +146,7 @@ public class CustomerServiceTest {
   }
 
   @Test
-  public void parseUpdateWithEmptyFirstName() {
+  public void parseUpdateRequest_FirstNameEmpty_ShouldNotChange() {
     Customer request = TestUtil.getCustomers(1).get(0);
     Customer response = TestUtil.getCustomers(1).get(0);
 
@@ -157,7 +157,7 @@ public class CustomerServiceTest {
   }
 
   @Test
-  public void parseUpdateWithValidFirstName() {
+  public void parseUpdateRequest_FirstNameValid_ShouldChange() {
     Customer request = TestUtil.getCustomers(1).get(0);
     Customer response = TestUtil.getCustomers(1).get(0);
 
@@ -168,7 +168,7 @@ public class CustomerServiceTest {
   }
 
   @Test
-  public void parseUpdateWithNullLastName() {
+  public void parseUpdateRequest_LastNameNull_ShouldNotChange() {
     Customer request = TestUtil.getCustomers(1).get(0);
     Customer response = TestUtil.getCustomers(1).get(0);
 
@@ -179,7 +179,7 @@ public class CustomerServiceTest {
   }
 
   @Test
-  public void parseUpdateWithEmptyLastName() {
+  public void parseUpdateRequest_LastNameEmpty_ShouldNotChange() {
     Customer request = TestUtil.getCustomers(1).get(0);
     Customer response = TestUtil.getCustomers(1).get(0);
 
@@ -190,7 +190,7 @@ public class CustomerServiceTest {
   }
 
   @Test
-  public void parseUpdateWithValidLastName() {
+  public void parseUpdateRequest_LastNameValid_ShouldChange() {
     Customer request = TestUtil.getCustomers(1).get(0);
     Customer response = TestUtil.getCustomers(1).get(0);
 
@@ -201,7 +201,7 @@ public class CustomerServiceTest {
   }
 
   @Test
-  public void parseUpdateWithNullPhoneNumber() {
+  public void parseUpdateRequest_PhoneNumberNull_ShouldNotChange() {
     Customer request = TestUtil.getCustomers(1).get(0);
     Customer response = TestUtil.getCustomers(1).get(0);
 
@@ -212,7 +212,7 @@ public class CustomerServiceTest {
   }
 
   @Test
-  public void parseUpdateWithEmptyPhoneNumber() {
+  public void parseUpdateRequest_PhoneNumberEmpty_ShouldNotChange() {
     Customer request = TestUtil.getCustomers(1).get(0);
     Customer response = TestUtil.getCustomers(1).get(0);
 
@@ -223,7 +223,7 @@ public class CustomerServiceTest {
   }
 
   @Test
-  public void parseUpdateWithValidPhoneNumber() {
+  public void parseUpdateRequest_PhoneNumberValid_ShouldChange() {
     Customer request = TestUtil.getCustomers(1).get(0);
     Customer response = TestUtil.getCustomers(1).get(0);
 

@@ -48,7 +48,7 @@ public class TransactionServiceTest {
   @MockBean private OperationFactory operationFactory;
 
   @Test
-  public void testCreditTransaction() {
+  public void commitTransaction_CreditTransaction_ShouldUpdateAccountBalance() {
 
     Customer customer = new Customer();
     customer.setAccountList(new ArrayList<>());
@@ -87,7 +87,7 @@ public class TransactionServiceTest {
   }
 
   @Test
-  public void testDebitTransaction() {
+  public void commitTransaction_DebitTransaction_ShouldUpdateAccountBalance() {
 
     Customer customer = new Customer();
     customer.setAccountList(new ArrayList<>());
@@ -126,7 +126,7 @@ public class TransactionServiceTest {
   }
 
   @Test(expected = NotEnoughBalanceException.class)
-  public void testInvalidDebitTransaction() {
+  public void commitTransaction_DebitTransactionInvalid_ThrowsNotEnoughBalanceException() {
 
     Customer customer = new Customer();
     customer.setAccountList(new ArrayList<>());
@@ -162,7 +162,7 @@ public class TransactionServiceTest {
   }
 
   @Test
-  public void testInitialCreditTransaction() {
+  public void commitTransaction_InitialCredit_ShouldUpdateAccountBalance() {
 
     Customer customer = new Customer();
     customer.setAccountList(new ArrayList<>());
@@ -199,7 +199,7 @@ public class TransactionServiceTest {
   }
 
   @Test
-  public void revertCreditTransaction() {
+  public void commitTransaction_RevertCreditTransaction_ShouldUpdateAccountBalance() {
     Customer customer = new Customer();
     customer.setAccountList(new ArrayList<>());
     customer.setId(1L);
@@ -237,7 +237,7 @@ public class TransactionServiceTest {
   }
 
   @Test
-  public void revertInitialTransaction() {
+  public void commitTransaction_RevertInitialTransaction_ShouldUpdateAccountBalance() {
     Customer customer = new Customer();
     customer.setAccountList(new ArrayList<>());
     customer.setId(1L);
@@ -275,7 +275,7 @@ public class TransactionServiceTest {
   }
 
   @Test
-  public void revertDebitTransaction() {
+  public void commitTransaction_RevertDebitTransaction_ShouldUpdateAccountBalance() {
     Customer customer = new Customer();
     customer.setAccountList(new ArrayList<>());
     customer.setId(1L);
@@ -313,7 +313,7 @@ public class TransactionServiceTest {
   }
 
   @Test(expected = NotEnoughBalanceException.class)
-  public void revertTransactionException() {
+  public void commitTransaction_RevertCreditTransaction_ThrowsException() {
     Customer customer = new Customer();
     customer.setAccountList(new ArrayList<>());
     customer.setId(1L);
@@ -351,7 +351,7 @@ public class TransactionServiceTest {
   }
 
   @Test
-  public void getAllTransactionsOfAccount() {
+  public void getAllTransactionsOfAccount_ThwoTransactions_ReturnsTwoTransactions() {
 
     List<Transaction> transaction = TestUtil.getTransaction(2);
     Customer customer = TestUtil.getCustomers(1).get(0);

@@ -1,0 +1,8 @@
+mywebserver:
+  image: example/blue-harvest
+  ports:
+    - 4000:8585
+myfrontendserver:
+  image: frontend/blue-harvest
+  ports:
+    - 9000:8070

@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revised.exception.NotEnoughBalanceException;
 import com.revised.model.Transaction;
 import com.revised.service.ITransactionService;
 import com.revised.util.TestUtil;
@@ -40,7 +41,7 @@ public class TransactionControllerTest {
   private String getAllTransactionOfAccount = "/api/v1/accounts/1/transactions";
 
   @Test
-  public void getAllTransactionOfAccount() throws Exception {
+  public void getAllTransactionOfAccount_FiveTransactions_ReturnsFiveRecords() throws Exception {
 
     transactionList = TestUtil.getTransaction(5);
     when(transactionService.getAllTransactionOfAccount(1L)).thenReturn(transactionList);
@@ -51,7 +52,7 @@ public class TransactionControllerTest {
   }
 
   @Test
-  public void getAllTransactionOfAccountEMpty() throws Exception {
+  public void getAllTransactionOfAccount_NoRecord_ReturnsEmpty() throws Exception {
 
     transactionList = TestUtil.getTransaction(0);
     when(transactionService.getAllTransactionOfAccount(1L)).thenReturn(transactionList);
@@ -62,7 +63,7 @@ public class TransactionControllerTest {
   }
 
   @Test
-  public void createNewTransaction() throws Exception {
+  public void commitTransaction_ValidTransaction_ReturnsCreatedStatus() throws Exception {
     transactionList = TestUtil.getTransaction(1);
     when(transactionService.commitTransaction(transactionList.get(0), 1l))
         .thenReturn(transactionList.get(0));
@@ -75,7 +76,20 @@ public class TransactionControllerTest {
   }
 
   @Test
-  public void revertTransaction() throws Exception {
+  public void commitTransaction_InValidTransaction_ReturnsBadRequestStatus() throws Exception {
+    transactionList = TestUtil.getTransaction(1);
+    when(transactionService.commitTransaction(Mockito.any(Transaction.class), Mockito.anyLong()))
+        .thenThrow(new NotEnoughBalanceException("Not Enough Balance."));
+    mockMvc
+        .perform(
+            post(newTransaction)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(transactionList.get(0))))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  public void revertTransaction_ValidTransaction_ReturnsOKStatus() throws Exception {
 
     transactionList = TestUtil.getTransaction(1);
     Mockito.doReturn(transactionList.get(0)).when(transactionService).revertTransaction(1L, 1L);
@@ -85,5 +99,20 @@ public class TransactionControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(transactionList.get(0))))
         .andExpect(status().isOk());
+  }
+
+  @Test
+  public void revertTransaction_InvalidTransaction_ReturnsBadRequestStatus() throws Exception {
+
+    transactionList = TestUtil.getTransaction(1);
+    Mockito.
+        when(transactionService.revertTransaction(1L, 1L))
+        .thenThrow(new NotEnoughBalanceException("Not Enough Balance."));
+    mockMvc
+        .perform(
+            put(revertTransaction)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(transactionList.get(0))))
+        .andExpect(status().isBadRequest());
   }
 }

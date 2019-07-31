@@ -23,7 +23,7 @@ public class CustomerExistValidationTest {
   @MockBean private CustomerRepository customerRepository;
 
   @Test
-  public void valid() {
+  public void apply_ValidCustomer_ReturnsTrue() {
     Customer customer = TestUtil.getCustomers(1).get(0);
     Optional<Customer> mock = Optional.of(customer);
     Mockito.when(customerRepository.findById(1L)).thenReturn(mock);
@@ -31,7 +31,7 @@ public class CustomerExistValidationTest {
   }
 
   @Test(expected = ResourceNotFoundException.class)
-  public void invalid() {
+  public void apply_InValidCustomer_ThrowsException() {
     Optional<Customer> mock = Optional.empty();
     Mockito.when(customerRepository.findById(1L)).thenReturn(mock);
     validation.apply(1L);

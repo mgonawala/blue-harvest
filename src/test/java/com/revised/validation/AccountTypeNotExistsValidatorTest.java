@@ -10,7 +10,7 @@ import org.junit.Test;
 public class AccountTypeNotExistsValidatorTest {
 
   @Test
-  public void valid() {
+  public void isValid_ValidAccount_ReturnsTrue() {
     Account account = TestUtil.getAccountList(1).get(0);
     Customer customer = TestUtil.getCustomers(1).get(0);
 
@@ -23,7 +23,7 @@ public class AccountTypeNotExistsValidatorTest {
   }
 
   @Test
-  public void invalid() {
+  public void isValid_InValidAccount_ReturnsFalse() {
     Account account = TestUtil.getAccountList(1).get(0);
     Account other = TestUtil.getAccountList(1).get(0);
     other.setType(AccountType.SAVINGS);

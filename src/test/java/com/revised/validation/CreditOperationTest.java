@@ -23,7 +23,7 @@ public class CreditOperationTest {
   @Mock private TransactionRepository transactionRepository;
 
   @Test
-  public void testValid() {
+  public void apply_ValidCreditOperation_ReturnsSuccessStatus() {
 
     CreditOperation creditOperation = new CreditOperation(accountRepository, transactionRepository);
     Transaction transaction = TestUtil.getTransaction(1).get(0);
