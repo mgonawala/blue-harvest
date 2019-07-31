@@ -1,12 +1,14 @@
 package com.revised.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.DecimalMin;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -29,7 +31,8 @@ public class Account extends DateAudit {
   @OnDelete(action = OnDeleteAction.CASCADE)
   private Customer customer;
 
-  private String status;
+  @OneToMany(mappedBy = "account")
+  private List<Transaction> transactionList;
 
   public Long getId() {
     return id;
@@ -63,12 +66,12 @@ public class Account extends DateAudit {
     this.customer = customer;
   }
 
-  public String getStatus() {
-    return status;
+  public List<Transaction> getTransactionList() {
+    return transactionList;
   }
 
-  public void setStatus(String status) {
-    this.status = status;
+  public void setTransactionList(List<Transaction> transactionList) {
+    this.transactionList = transactionList;
   }
 
   @Override

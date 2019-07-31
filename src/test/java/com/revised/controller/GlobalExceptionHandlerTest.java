@@ -5,11 +5,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolationException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,7 +51,7 @@ public class GlobalExceptionHandlerTest {
   @Test
   public void testConstraintValidationException() throws IOException {
 
-    ConstraintViolationException exception = Mockito.mock(ConstraintViolationException.class);
+    DataIntegrityViolationException exception = Mockito.mock(DataIntegrityViolationException.class);
     Mockito.when(exception.getMessage()).thenReturn("Exception Ocurred");
     ResponseEntity<Object> result =
         globalExceptionHandler.constraintViolationException(exception, httpResponse);

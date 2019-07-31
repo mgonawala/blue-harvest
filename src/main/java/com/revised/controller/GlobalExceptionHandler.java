@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -69,9 +69,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
    * @param response returns response with error BAD_REQUEST
    * @throws IOException
    */
-  @org.springframework.web.bind.annotation.ExceptionHandler(ConstraintViolationException.class)
+  @org.springframework.web.bind.annotation.ExceptionHandler(DataIntegrityViolationException.class)
   public ResponseEntity<Object> constraintViolationException(
-      ConstraintViolationException ex, HttpServletResponse response) {
+      DataIntegrityViolationException ex, HttpServletResponse response) {
     Map<String, Object> body = new LinkedHashMap<>();
     body.put(TIMESTAMP, new Date());
     body.put(STATUS, HttpStatus.NOT_FOUND.value());
@@ -94,18 +94,31 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   }
 
   @ExceptionHandler({
-    CustomerExistsException.class,
-    AccountAlreadyExistsException.class,
     NotEnoughBalanceException.class,
     InvalidOperationException.class
+  })
+  public final ResponseEntity<Object> invalidRequest(Exception ex, WebRequest request) {
+    Map<String, Object> body = new LinkedHashMap<>();
+    body.put(TIMESTAMP, new Date());
+    body.put(STATUS, HttpStatus.BAD_REQUEST.value());
+    body.put(ERRORS, Arrays.asList("Can not perform the Request."));
+    logger.info(ERROR_IN_VALIDATION);
+    logger.debug(VALIDATION_ERRORS + ex.getMessage());
+    return new ResponseEntity(body, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler({
+      CustomerExistsException.class,
+      AccountAlreadyExistsException.class
   })
   public final ResponseEntity<Object> customerNotFound(Exception ex, WebRequest request) {
     Map<String, Object> body = new LinkedHashMap<>();
     body.put(TIMESTAMP, new Date());
-    body.put(STATUS, HttpStatus.BAD_REQUEST.value());
+    body.put(STATUS, HttpStatus.CONFLICT.value());
     body.put(ERRORS, Arrays.asList(ex.getMessage()));
     logger.info(ERROR_IN_VALIDATION);
     logger.debug(VALIDATION_ERRORS + ex.getMessage());
-    return new ResponseEntity(body, HttpStatus.NOT_FOUND);
+    return new ResponseEntity(body, HttpStatus.CONFLICT);
   }
+
 }
