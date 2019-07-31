@@ -95,11 +95,19 @@
   * **Code:** 409 CONFLICT <br />
     **Content:** `{
                     "timestamp": "2019-07-31T14:58:37.798+0000",
-                    "status": 400,
+                    "status": 409,
                     "errors": [
                       "Account already exists for customer:1"
                     ]
                   }`
+  * **Code:** 404 NOT_FOUND <br />
+      **Content:** `{
+                      "timestamp": "2019-07-31T14:58:37.798+0000",
+                      "status": 404,
+                      "errors": [
+                        "Customer Does not exist:String"
+                      ]
+                    }`
                   
 * **Notes:**
 
@@ -157,6 +165,14 @@
                       "Account Number is not Valid:134"
                     ]
                   }`
+  * **Code:** 400 BAD_REQUEST <br />
+      **Content:** `{
+                      "timestamp": "2019-07-31T15:04:54.850+0000",
+                      "status": 400,
+                      "errors": [
+                        "Not Enough balance"
+                      ]
+                    }`
                   
 **Get Customer Details**
 ----

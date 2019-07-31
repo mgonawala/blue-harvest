@@ -17,10 +17,6 @@ installed on your machine.
 
 You would need Java 1.8 or above.
 
-```
-mvn clean install
-```
-
 ### Installing
 
 A step by step series of examples that tell you how to get a development env running
@@ -112,8 +108,6 @@ Below is a list of Dependencies used in this project.
 This app is deployed on Heroku cloud.
 Live URL: https://blue-harvest-mohini.herokuapp.com/swagger-ui.html
 
-Sonar token:08775b091bce5062c82c849c5d929d83f7639a51
-
 
 ### CI/CD Integration
 
@@ -124,3 +118,7 @@ After which it will be deployed on Heroku APP.
 It's also been integrated with Sonar Cloud.
 Result of Sonar analysis can be found on below URL.
 Sonar URL : https://sonarcloud.io/organizations/blue-harvest/projects
+
+### Detailed API
+
+Please look at api.md file for detailed API description.
