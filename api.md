@@ -221,3 +221,5 @@
                     ]
                   }`
  
+ 
+**For a complete list of available APIs, browse to /swagger-ui.html page**

@@ -52,10 +52,10 @@ public class GlobalExceptionHandlerTest {
   public void testConstraintValidationException() throws IOException {
 
     DataIntegrityViolationException exception = Mockito.mock(DataIntegrityViolationException.class);
-    Mockito.when(exception.getMessage()).thenReturn("Exception Ocurred");
+    Mockito.when(exception.getMessage()).thenReturn("Exception Occurred");
     ResponseEntity<Object> result =
         globalExceptionHandler.constraintViolationException(exception, httpResponse);
-    Assert.assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode());
+    Assert.assertEquals(HttpStatus.CONFLICT, result.getStatusCode());
   }
 
   @Test

@@ -113,3 +113,14 @@ This app is deployed on Heroku cloud.
 Live URL: https://blue-harvest-mohini.herokuapp.com/swagger-ui.html
 
 Sonar token:08775b091bce5062c82c849c5d929d83f7639a51
+
+
+### CI/CD Integration
+
+Application makes use of Continuous Integration/Deployment with the help of Travis/ GitHub /Heroku.
+
+Any commit to GitHub repo will trigger a build on Travis.
+After which it will be deployed on Heroku APP.
+It's also been integrated with Sonar Cloud.
+Result of Sonar analysis can be found on below URL.
+Sonar URL : https://sonarcloud.io/organizations/blue-harvest/projects
