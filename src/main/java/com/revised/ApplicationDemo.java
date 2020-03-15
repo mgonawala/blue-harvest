@@ -1,5 +1,32 @@
 package com.revised;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.TimeZone;
+
+import javax.annotation.PostConstruct;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
+import org.springframework.data.convert.Jsr310Converters;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revised.model.Account;
+import com.revised.model.Customer;
+import com.revised.service.IAccountService;
+import com.revised.service.ICustomerService;
 import com.revised.validation.AccountBalanceCondition;
 import com.revised.validation.AccountTypeNotExistsValidator;
 import com.revised.validation.DualValidator;
@@ -8,18 +35,7 @@ import com.revised.validation.TransactionValidCondition;
 import com.revised.validation.strategy.CreateAccountValStrategy;
 import com.revised.validation.strategy.IValidationStrategy;
 import com.revised.validation.strategy.RevertTransactionValidationStrategy;
-import java.util.TimeZone;
-import javax.annotation.PostConstruct;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
-import org.springframework.context.annotation.Bean;
-import org.springframework.data.convert.Jsr310Converters;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
 
 @EntityScan(basePackageClasses = {ApplicationDemo.class, Jsr310Converters.class})
 @EnableJpaRepositories(value = {"com.revised.repository"})
@@ -92,7 +108,7 @@ public class ApplicationDemo extends SpringBootServletInitializer {
     return strategy;
   }
 
-  /*@Bean
+  @Bean
   @Profile("dev")
   @ConditionalOnProperty(value = "customers.stub", havingValue = "true", matchIfMissing = false)
   CommandLineRunner runner(ICustomerService customerService, IAccountService accountService) {
@@ -119,5 +135,5 @@ public class ApplicationDemo extends SpringBootServletInitializer {
         System.out.println("Unable to save Accounts: " + e.getMessage());
       }
     };
-  }*/
+  }
 }
